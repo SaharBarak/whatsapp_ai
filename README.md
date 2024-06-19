@@ -1,8 +1,8 @@
-# WhatsApp Newsletter Bot
+# 🌟 WhatsApp Newsletter Bot 🌟
 
 A WhatsApp bot that generates a weekly newsletter from group chat messages, including text, images, and voice messages. The bot leverages OpenAI's GPT-3 for generating summaries and Google Cloud APIs for image recognition and voice transcription.
 
-## Features
+## ✨ Features ✨
 
 - **Weekly Newsletter Generation**: Collects messages from the past week and generates a summary.
 - **Voice Message Transcription**: Transcribes voice messages using Google Cloud Speech-to-Text.
@@ -11,7 +11,7 @@ A WhatsApp bot that generates a weekly newsletter from group chat messages, incl
 - **Endpoints**: Provides endpoints to generate and send the latest newsletter.
 - **Automated Tasks**: Cron jobs for automatic newsletter generation and sending.
 
-## Prerequisites
+## 🛠️ Prerequisites 🛠️
 
 - Node.js (>=14.x)
 - Docker
@@ -19,7 +19,7 @@ A WhatsApp bot that generates a weekly newsletter from group chat messages, incl
 - OpenAI API key
 - WhatsApp Web session setup
 
-## Environment Variables
+## 📝 Environment Variables 📝
 
 Create a `.env` file in the root directory with the following variables:
 
@@ -30,7 +30,7 @@ OPENAI_API_KEY=your-openai-api-key
 GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
 ```
 
-## Installation
+## 🚀 Installation 🚀
 
 1. Clone the repository:
 
@@ -56,7 +56,7 @@ GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
     GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
     ```
 
-## Running the Bot
+## 🏃 Running the Bot 🏃
 
 ### Using Node.js
 
@@ -82,7 +82,7 @@ GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
     docker run --env-file .env -it --rm whatsapp-newsletter
     ```
 
-## API Endpoints
+## 📡 API Endpoints 📡
 
 ### Generate Newsletter
 
@@ -106,11 +106,11 @@ Sends the latest generated newsletter to the WhatsApp group.
 - `404 Not Found`: Group not found.
 - `500 Internal Server Error`: Error sending newsletter.
 
-## Cron Jobs
+## ⏱️ Cron Jobs ⏱️
 
 Automate the generation and sending of the newsletter using cron jobs.
 
-## ToDo
+## 📝 ToDo 📝
 
 - **Process Voice Messages**: Implement the transcription logic using a service like Google Cloud Speech-to-Text.
 - **Optimize the Prompt for a Funny, Cheerful Newsletter**: Enhance the prompt to make the newsletter more engaging and cheerful.
@@ -149,7 +149,7 @@ The bot uses `node-cron` to schedule tasks. These tasks are configured to run we
     });
     ```
 
-## Cost Considerations
+## 💰 Cost Considerations 💰
 
 ### OpenAI API
 
@@ -167,7 +167,7 @@ The bot uses `node-cron` to schedule tasks. These tasks are configured to run we
 - **Ease of Deployment**: Simplifies the deployment process by providing a single command to build and run the application.
 - **Scalability**: Docker containers can be easily scaled up or down depending on the load.
 
-## Code Overview
+## 🧩 Code Overview 🧩
 
 ### `index.js`
 
@@ -186,11 +186,11 @@ The bot uses `node-cron` to schedule tasks. These tasks are configured to run we
 - **transcribeVoiceMessage**: Transcribes voice messages using Google Cloud Speech-to-Text.
 - **listenToGroup**: Listens to a specified WhatsApp group.
 
-## Contributing
+## 🤝 Contributing 🤝
 
 Feel free to open issues or submit pull requests if you have suggestions or improvements.
 
-## License
+## 📜 License 📜
 
 This project is licensed under the GNU Affero General Public License (AGPL). See the [LICENSE](LICENSE) file for details.
 
