@@ -10,6 +10,16 @@ A WhatsApp bot that generates a weekly newsletter from group chat messages, incl
 - **Language Support**: Generates newsletters in Hebrew.
 - **Endpoints**: Provides endpoints to generate and send the latest newsletter.
 - **Automated Tasks**: Cron jobs for automatic newsletter generation and sending.
+- **WhatsApp Session Persistence**: Maintains the WhatsApp session between reruns to avoid blocking due to too many reconnections.
+
+## 📝 ToDo 📝
+
+- **Process Voice Messages**: Implement the transcription logic using a service like Google Cloud Speech-to-Text.
+- **Optimize the Prompt for a Funny, Cheerful Newsletter**: Enhance the prompt to make the newsletter more engaging and cheerful.
+- **Process Likes, Emojis, Links, and Social Media Posts**: Extend the message processing to include likes, emojis, links, and social media posts.
+- **Add Basic Styling to the Newsletter**: Initially add simple text formatting and then later convert it to a PDF.
+- **Manage Space for OpenAI API Request**: Implement a method to handle a large number of messages by summarizing or chunking data before sending it to the OpenAI API.
+- **Optimize for Hebrew**: Ensure all text processing and the generated newsletter are optimized for Hebrew.
 
 ## 🛠️ Prerequisites 🛠️
 
@@ -56,9 +66,9 @@ GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
     GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
     ```
 
-## 🏃 Running the Bot 🏃
+### Running the Bot
 
-### Using Node.js
+#### Using Node.js
 
 1. Start the bot:
 
@@ -68,7 +78,7 @@ GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
 
 2. Scan the QR code with your WhatsApp to authenticate.
 
-### Using Docker
+#### Using Docker
 
 1. Build the Docker image:
 
@@ -110,45 +120,6 @@ Sends the latest generated newsletter to the WhatsApp group.
 
 Automate the generation and sending of the newsletter using cron jobs.
 
-## 📝 ToDo 📝
-
-- **Process Voice Messages**: Implement the transcription logic using a service like Google Cloud Speech-to-Text.
-- **Optimize the Prompt for a Funny, Cheerful Newsletter**: Enhance the prompt to make the newsletter more engaging and cheerful.
-- **Process Likes, Emojis, Links, and Social Media Posts**: Extend the message processing to include likes, emojis, links, and social media posts.
-- **Add Basic Styling to the Newsletter**: Initially add simple text formatting and then later convert it to a PDF.
-- **Manage Space for OpenAI API Request**: Implement a method to handle a large number of messages by summarizing or chunking data before sending it to the OpenAI API.
-- **Decouple and Modularize the Code**: Refactor the codebase to separate different functionalities into modules.
-
-
-### Setup
-
-The bot uses `node-cron` to schedule tasks. These tasks are configured to run weekly.
-
-1. Install `node-cron`:
-
-    ```bash
-    npm install node-cron
-    ```
-
-2. Add the following to `index.js`:
-
-    ```javascript
-    import cron from 'node-cron';
-    import axios from 'axios';
-
-    // Schedule tasks to be run on the server.
-    cron.schedule('0 0 * * 0', () => { // Runs every Sunday at midnight
-        console.log('Running cron job to generate and send newsletter...');
-        axios.get('http://localhost:3000/generate-newsletter')
-            .then(() => {
-                return axios.get('http://localhost:3000/send-newsletter');
-            })
-            .catch(error => {
-                console.error('Error during cron job execution:', error);
-            });
-    });
-    ```
-
 ## 💰 Cost Considerations 💰
 
 ### OpenAI API
@@ -173,13 +144,44 @@ The bot uses `node-cron` to schedule tasks. These tasks are configured to run we
 
 - Initializes WhatsApp client with Puppeteer.
 - Defines handlers for WhatsApp messages and QR code generation.
-- Implements functions to process messages, transcribe voice messages, describe images, and generate summaries.
-- Sets up Express endpoints to generate and send newsletters.
-- Includes cron jobs for scheduling automatic tasks.
+- Sets up Express server and routes for API endpoints.
+- Schedules cron jobs for automatic newsletter generation and sending.
+
+### `services/newsletterGenerator.js`
+
+- **processMessages**: Fetches and processes group messages, including text and images.
+- **simplifyMessageForLog**: Simplifies message data for logging.
+- **simplifyMessageForAPI**: Simplifies message data for API requests.
+- **generateSummary**: Generates a summary of the messages using OpenAI's GPT-3.
+- **describeImage**: Describes images using Google Cloud Vision.
+
+### `services/openaiService.js`
+
+- **generateSummary**: Sends structured JSON data to OpenAI to generate a summary.
+
+### `services/vertexaiService.js`
+
+- **describeImage**: Uses Google Cloud Vision to describe images.
+
+### `services/helpers/ensureCacheDirExists.js`
+
+- **ensureCacheDirExists**: Ensures the cache directory exists before writing files.
+
+### `services/whatsappService.js`
+
+- **whatsappClient**: Initializes the WhatsApp client and sets up event listeners.
+
+### `routes/generateNewsletter.js`
+
+- **GET /generate-newsletter**: Endpoint to generate the newsletter for the past week.
+
+### `routes/sendNewsletter.js`
+
+- **GET /send-newsletter**: Endpoint to send the latest generated newsletter.
 
 ### Functions
 
-- **handleGroupMessage**: Fetches messages weekly and processes them.
+- **handleGroupMessage**: Handles incoming group messages.
 - **processGroupMessages**: Processes the group messages, including text, images, and voice messages.
 - **generateSummary**: Generates a summary of the messages using OpenAI's GPT-3.
 - **describeImage**: Describes images using Google Cloud Vision.
@@ -193,8 +195,6 @@ Feel free to open issues or submit pull requests if you have suggestions or impr
 ## 📜 License 📜
 
 This project is licensed under the GNU Affero General Public License (AGPL). See the [LICENSE](LICENSE) file for details.
-
----
 
 ### LICENSE
 
