@@ -1,3 +1,5 @@
 node_modules/
 .env
-dodalend-10f7408a20f5.json
+config/dodalend-bbeeb08381ae.json
+session_data/
+.wwebjs_auth/
