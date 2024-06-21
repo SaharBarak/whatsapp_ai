@@ -89,7 +89,26 @@ GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
 2. Run the Docker container:
 
     ```bash
-    docker run --env-file .env -it --rm whatsapp-newsletter
+    docker run --env-file .env -it --name whatsapp-newsletter-container whatsapp-newsletter
+    ```
+
+3. **Authenticate WhatsApp Web**:
+
+    - After running the Docker container, the terminal will display a QR code.
+    - Open WhatsApp on your phone and go to "Settings" > "Linked Devices".
+    - Tap on "Link a Device" and scan the QR code displayed in the terminal.
+    - Once authenticated, the bot will start interacting with WhatsApp.
+
+4. **Reattach to the running container (if necessary)**:
+
+    If you need to reattach to the container to view the QR code again, you can use the following command:
+    ```bash
+    docker attach whatsapp-newsletter-container
+    ```
+
+    Alternatively, you can access the terminal inside the container using:
+    ```bash
+    docker exec -it whatsapp-newsletter-container /bin/bash
     ```
 
 ## 📡 API Endpoints 📡
