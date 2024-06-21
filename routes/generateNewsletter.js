@@ -4,24 +4,22 @@ import whatsappClient from '../services/whatsappService.js';
 
 const router = express.Router();
 
-router.get('/generate-newsletter', async (req, res) => {
+router.post('/generate-newsletter', async (req, res) => {
+    const { prompt } = req.body; // Get the custom prompt from the request body
+
     try {
         const groupName = process.env.GROUP_NAME;
-        const prompt = req.query.prompt || 'Summarize the following messages into a weekly newsletter:';
-        const chats = await whatsappClient.getChats();
-        const group = chats.find(chat => chat.isGroup && chat.name === groupName);
-
+        const group = await whatsappClient.getChats().then(chats => chats.find(chat => chat.isGroup && chat.name === groupName));
         if (group) {
             const messages = await group.fetchMessages({ limit: 10000 });
             console.log(messages);
-            const result = await processMessages(messages, prompt);
-            res.status(200).json(result);
+            await processMessages(messages, prompt);
+            res.status(200).send('Newsletter generated successfully');
         } else {
             res.status(404).send('Group not found');
         }
     } catch (error) {
-        console.error('Error generating newsletter:', error);
-        res.status(500).send(`Error generating newsletter: ${error.message}`);
+        res.status(500).send('Error generating newsletter');
     }
 });
 

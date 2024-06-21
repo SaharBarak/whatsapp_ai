@@ -14,12 +14,14 @@ A WhatsApp bot that generates a weekly newsletter from group chat messages, incl
 
 ## 📝 ToDo 📝
 
+- **Optimize for Hebrew**: Ensure all text processing and the generated newsletter are optimized for Hebrew.
+- **Decouple Flow Further**: Separate the flow to generate the newsletter from the flow to pull messages and organize them into a JSON file.
+- **Add Basic Styling to the Newsletter**: Initially add simple text formatting and then later convert it to a PDF.
 - **Process Voice Messages**: Implement the transcription logic using a service like Google Cloud Speech-to-Text.
 - **Optimize the Prompt for a Funny, Cheerful Newsletter**: Enhance the prompt to make the newsletter more engaging and cheerful.
 - **Process Likes, Emojis, Links, and Social Media Posts**: Extend the message processing to include likes, emojis, links, and social media posts.
-- **Add Basic Styling to the Newsletter**: Initially add simple text formatting and then later convert it to a PDF.
 - **Manage Space for OpenAI API Request**: Implement a method to handle a large number of messages by summarizing or chunking data before sending it to the OpenAI API.
-- **Optimize for Hebrew**: Ensure all text processing and the generated newsletter are optimized for Hebrew.
+
 
 ## 🛠️ Prerequisites 🛠️
 
@@ -115,14 +117,25 @@ GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
 
 ### Generate Newsletter
 
-Generates the newsletter for the past week.
+Generates the newsletter for the past week. Accepts a custom prompt from the request body.
 
-**Endpoint**: `GET /generate-newsletter`
+**Endpoint**: `POST /generate-newsletter`
+
+**Request Body**:
+- `prompt` (optional): Custom prompt to use for generating the summary.
 
 **Response**:
 - `200 OK`: Newsletter generated successfully.
 - `404 Not Found`: Group not found.
 - `500 Internal Server Error`: Error generating newsletter.
+
+**Example request:**
+
+```json
+{
+    "prompt": "סכם את כל ההודעות והפעולות שבוצעו בקבוצה השבוע"
+}
+```
 
 ### Send Newsletter
 

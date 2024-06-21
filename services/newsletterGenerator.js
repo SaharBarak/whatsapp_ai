@@ -34,7 +34,7 @@ export async function processMessages(messages, prompt) {
                 sender: `${contact.pushname || contact.number}`,
                 type: msg.type,
                 hasMedia: msg.hasMedia,
-                date: new Date(msg.timestamp * 1000).toLocaleString()
+                date: new Date(msg.timestamp * 1000).toLocaleString('he-IL') // Use Hebrew locale
             };
             console.log('Processed message:', simplifyMessageForLog(simplifiedMessage));
             return simplifiedMessage;
@@ -51,7 +51,7 @@ export async function processMessages(messages, prompt) {
             const description = await describeImage(media.data);
             return {
                 ...msg,
-                body: `${msg.body}\n\nDescription: ${description}`
+                body: `${msg.body}\n\nתיאור: ${description}`
             };
         }));
 
@@ -84,7 +84,7 @@ export async function processMessages(messages, prompt) {
 
         // // Assuming you have access to the chat object to send the message
         // const chat = await whatsappClient.getChatById(messages[0].from); // or any valid method to get the chat
-        // chat.sendMessage(`Weekly Summary:\n${summary}`);
+        // chat.sendMessage(`סיכום שבועי:\n${summary}`);
 
         // Return the combined messages for the response
         return simplifiedMessagesForFile;
