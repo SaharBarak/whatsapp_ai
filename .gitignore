@@ -1,5 +1,5 @@
-node_modules/
-.env
-config/dodalend-bbeeb08381ae.json
-session_data/
-.wwebjs_auth/
+backend/node_modules
+backend/.env
+backend/src/config/dodalend-bbeeb08381ae.json
+backend/src/clients/session_data
+backend/src/cache
