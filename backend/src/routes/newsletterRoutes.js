@@ -1,5 +1,5 @@
 import express from 'express';
-import { generateNewsletterText } from '../services/newsletterService.js';
+import { generateNewsletterObject } from '../services/newsletterService.js';
 import { sendGroupMessage } from '../services/groupService.js';
 
 const router = express.Router();
@@ -10,7 +10,7 @@ router.post('/generate-newsletter', async (req, res) => {
 
     try {
         const groupName = process.env.GROUP_NAME;
-        const newsletterText = await generateNewsletterText(groupName, prompt);
+        const newsletterText = await generateNewsletterObject(groupName, prompt);
         res.status(200).send(newsletterText);
     } catch (error) {
         res.status(500).send(`Error generating newsletter: ${error.message}`);
