@@ -3,3 +3,5 @@ backend/.env
 backend/src/config/dodalend-bbeeb08381ae.json
 backend/src/clients/session_data
 backend/src/cache
+node_modules
+frontend/newsletter-presentation-app/node_modules
