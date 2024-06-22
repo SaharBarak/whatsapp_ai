@@ -174,51 +174,56 @@ Automate the generation and sending of the newsletter using cron jobs.
 
 ### `index.js`
 
-- Initializes WhatsApp client with Puppeteer.
-- Defines handlers for WhatsApp messages and QR code generation.
-- Sets up Express server and routes for API endpoints.
-- Schedules cron jobs for automatic newsletter generation and sending.
+- Initializes the WhatsApp client and sets up event listeners.
+- Configures Express server with API endpoints and cron jobs for automated tasks.
 
-### `services/newsletterGenerator.js`
+### `services/cacheService.js`
 
-- **processMessages**: Fetches and processes group messages, including text and images.
-- **simplifyMessageForLog**: Simplifies message data for logging.
-- **simplifyMessageForAPI**: Simplifies message data for API requests.
-- **generateSummary**: Generates a summary of the messages using OpenAI's GPT-3.
-- **describeImage**: Describes images using Google Cloud Vision.
+- **initializeCacheDirectory**: Ensures the cache directory exists for storing fetched data.
+- **writeToCache**: Writes data to the cache directory.
+- **readFromCache**: Reads data from the cache directory.
+
+### `services/newsletterService.js`
+
+- **fetchAndProcessMessages**: Fetches and processes messages from WhatsApp groups, including text and media.
+- **generateWeeklyNewsletter**: Generates a weekly newsletter summarizing group activities based on processed messages.
+- **sendNewsletter**: Sends the generated newsletter to subscribers.
+
+### `services/visionService.js`
+
+- **describeImage**: Utilizes Google Cloud Vision API to describe images.
+- **transcribeVoiceMessage**: Uses Google Cloud Speech-to-Text API to transcribe voice messages.
 
 ### `services/openaiService.js`
 
-- **generateSummary**: Sends structured JSON data to OpenAI to generate a summary.
+- **generateSummary**: Interfaces with OpenAI's GPT-3 to generate summaries of textual content.
 
-### `services/vertexaiService.js`
+### `gateways/vertexGateway.js`
 
-- **describeImage**: Uses Google Cloud Vision to describe images.
+- **describeImage**: Provides a gateway to interact with Google Cloud Vision API for image description.
 
-### `services/helpers/ensureCacheDirExists.js`
+### `gateways/openAIGateway.js`
 
-- **ensureCacheDirExists**: Ensures the cache directory exists before writing files.
+- **generateSummary**: Provides a gateway to interact with OpenAI's GPT-3 for generating text summaries.
 
-### `services/whatsappService.js`
+### `routes/newsletterRoutes.js`
 
-- **whatsappClient**: Initializes the WhatsApp client and sets up event listeners.
+- **GET /api/generate-newsletter**: Endpoint to trigger the newsletter generation process.
+- **GET /api/send-newsletter**: Endpoint to send the latest generated newsletter.
 
-### `routes/generateNewsletter.js`
+### `clients/whatsappClient.js`
 
-- **GET /generate-newsletter**: Endpoint to generate the newsletter for the past week.
+- **whatsappClient**: Configures and manages the WhatsApp client connection, including authentication and message handling.
 
-### `routes/sendNewsletter.js`
+### `handlers/messageHandlers.js`
 
-- **GET /send-newsletter**: Endpoint to send the latest generated newsletter.
+- **handleGroupMessage**: Handles incoming messages from WhatsApp groups.
+- **processMedia**: Processes media files, including images and voice messages.
 
-### Functions
+### `config/config.js`
 
-- **handleGroupMessage**: Handles incoming group messages.
-- **processGroupMessages**: Processes the group messages, including text, images, and voice messages.
-- **generateSummary**: Generates a summary of the messages using OpenAI's GPT-3.
-- **describeImage**: Describes images using Google Cloud Vision.
-- **transcribeVoiceMessage**: Transcribes voice messages using Google Cloud Speech-to-Text.
-- **listenToGroup**: Listens to a specified WhatsApp group.
+- Manages environment variables using dotenv for configuration.
+
 
 ## 🤝 Contributing 🤝
 
