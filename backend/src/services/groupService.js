@@ -1,14 +1,13 @@
 import whatsappClient from '../clients/whatsappClient.js';
 
-async function fetchGroupHeader(groupName) {
+export async function fetchGroupHeader(groupName) {
     const chats = await whatsappClient.getChats();
     const group = chats.find(chat => chat.isGroup && chat.name === groupName);
 
     if (group) {
-        const groupImage = await group.getProfilePicUrl();
         return {
             name: group.name,
-            image: groupImage
+            // No image retrieval here
         };
     } else {
         throw new Error('Group not found');
@@ -53,4 +52,6 @@ async function fetchGroupImages(groupName) {
 
     return imageUrls;
 }
-export { fetchGroupHeader, fetchGroupMessages, sendGroupMessage, fetchGroupImages };
+export { fetchGroupHeader, fetchGroupMessages, sendGroupMessage };
+
+
