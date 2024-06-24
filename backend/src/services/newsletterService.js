@@ -1,5 +1,5 @@
 import { fetchGroupMessages, fetchGroupHeader, fetchGroupImages } from './groupService.js';
-import { generateSummary } from '../gateways/openaiGateway.js';
+import { generateSummary } from '../gateways/openAIGateway.js';
 import { processImageDescriptions } from './visionService.js';
 import { writeMessagesToCache } from './cacheService.js';
 
@@ -57,26 +57,18 @@ export async function generateNewsletterText(groupName, prompt) {
 
     return finalSummary;
 }
+
 export async function generateNewsletterObject(groupName, prompt) {
     const groupHeader = await fetchGroupHeader(groupName);
     const newsletterText = await generateNewsletterText(groupName, prompt);
 
     const summaryArray = newsletterText.split('\n\n').map(paragraph => paragraph.trim()).filter(paragraph => paragraph.length > 0);
 
-    const summariesWithVisuals = await Promise.all(summaryArray.map(async (paragraph) => {
-        const visualUrl = await generateVisuals(paragraph);
-        return {
-            visualUrl,
-            text: paragraph
-        };
-    }));
-
     const imageUrls = await fetchGroupImages(groupName);
 
     return {
         groupName: groupHeader.name,
-        groupImage: groupHeader.image,
-        summaries: summariesWithVisuals,
+        summaries: summaryArray, // No visuals, just summaries
         images: imageUrls
     };
 }

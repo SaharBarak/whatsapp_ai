@@ -16,7 +16,7 @@ const App = () => {
     <div className="app">
       {newsletter && (
         <>
-          <GroupChatHeader groupName={newsletter.groupName} groupImage={newsletter.groupImage} />
+          <GroupChatHeader groupName={newsletter.groupName} />
           <SummaryList summaries={newsletter.summaries} />
           <ImageGallery images={newsletter.images} />
         </>

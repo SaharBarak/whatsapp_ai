@@ -15,16 +15,4 @@ async function processImageDescriptions(recentMessages) {
     return imageDescriptions;
 }
 
-async function generateVisualsForText(summaries) {
-    const summariesWithVisuals = await Promise.all(summaries.map(async (summary) => {
-        const visualUrl = await generateVisuals(summary);
-        return {
-            text: summary,
-            visualUrl
-        };
-    }));
-
-    return summariesWithVisuals;
-}
-
-export { processImageDescriptions, generateVisualsForText };
+export { processImageDescriptions };
