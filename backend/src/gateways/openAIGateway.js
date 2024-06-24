@@ -4,12 +4,6 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-// function formatMessagesForPrompt(messages) {
-//     return messages.map(msg => {
-//         return `${msg.date} - ${msg.sender}:\n${msg.body}`;
-//     }).join("\n\n");
-// }
-
 export async function generateSummary(messagesJSON, prompt) {
     const defaultPrompt = `שלום AI! יש לי אובייקט שמייצג סיכום של כל ההודעות שהסתובבו בקבוצת הוואטסאפ שלנו במהלך השבוע האחרון. האובייקט מכיל את כל המסרים, תאריכים, ושמות השולחים.
 

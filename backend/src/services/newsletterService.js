@@ -1,7 +1,7 @@
-import { fetchGroupMessages, fetchGroupHeader, fetchGroupImages } from './groupService.js';
+import { fetchGroupHeader, fetchGroupImages } from './groupService.js';
 import { generateSummary } from '../gateways/openAIGateway.js';
 import { processImageDescriptions } from './visionService.js';
-import { writeMessagesToCache } from './cacheService.js';
+import { find } from '../database/mongoClient.js';
 
 function simplifyMessageForLog(message) {
     const { body, timestamp, from, to, author, type, hasMedia } = message;
@@ -14,21 +14,19 @@ function simplifyMessageForAPI(message) {
 }
 
 async function fetchAndProcessMessages(groupName) {
-    const messages = await fetchGroupMessages(groupName);
+    const messages = await find('messages', { groupName });
     const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
     const recentMessages = await Promise.all(messages.map(async msg => {
         if (msg.timestamp * 1000 >= oneWeekAgo) {
-            const contact = await msg.getContact();
-            const senderName = contact.pushname || contact.number;
             return {
-                senderName,
+                senderName: msg.sender,
                 body: msg.body,
-                timestamp: msg.timestamp * 1000,
-                sender: `${contact.pushname || contact.number}`,
+                timestamp: msg.timestamp,
+                sender: msg.sender,
                 type: msg.type,
                 hasMedia: msg.hasMedia,
-                date: new Date(msg.timestamp * 1000).toLocaleString('he-IL') // Use Hebrew locale
+                date: new Date(msg.timestamp).toLocaleString('he-IL') // Use Hebrew locale
             };
         }
         return null;
@@ -47,9 +45,6 @@ export async function generateNewsletterText(groupName, prompt) {
     ];
 
     combinedMessages.sort((a, b) => a.timestamp - b.timestamp);
-
-    const simplifiedMessagesForLog = combinedMessages.map(msg => simplifyMessageForLog(msg));
-    writeMessagesToCache(simplifiedMessagesForLog);
 
     const simplifiedMessagesForAPI = combinedMessages.map(msg => simplifyMessageForAPI(msg));
 
