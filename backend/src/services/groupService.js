@@ -47,21 +47,6 @@ async function sendGroupMessage(groupName, message) {
     }
 }
 
-
-async function fetchGroupImages(groupName) {
-    const messages = await fetchGroupMessages(groupName);
-    const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
-
-    const imageMessages = messages.filter(msg => msg.hasMedia && msg.type === 'image' && msg.timestamp * 1000 >= oneWeekAgo);
-
-    const imageUrls = await Promise.all(imageMessages.map(async (msg) => {
-        const media = await msg.downloadMedia();
-        return media.url;
-    }));
-
-    return imageUrls;
-}
-
 async function fetchGroupImagesFromCache(groupName) {
     const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
 
@@ -75,6 +60,19 @@ async function fetchGroupImagesFromCache(groupName) {
     return imageUrls;
 }
 
-export { fetchGroupHeader, fetchGroupMessages, sendGroupMessage, fetchGroupImages, fetchGroupImagesFromCache };
+export { fetchGroupHeader, fetchGroupMessages, sendGroupMessage, fetchGroupImagesFromCache };
 
+// async function fetchGroupImages(groupName) {
+//     const messages = await fetchGroupMessages(groupName);
+//     const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+
+//     const imageMessages = messages.filter(msg => msg.hasMedia && msg.type === 'image' && msg.timestamp * 1000 >= oneWeekAgo);
+
+//     const imageUrls = await Promise.all(imageMessages.map(async (msg) => {
+//         const media = await msg.downloadMedia();
+//         return media.url;
+//     }));
+
+//     return imageUrls;
+// }
 

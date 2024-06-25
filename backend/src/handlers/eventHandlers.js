@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const imageDir = path.join(__dirname, '../../public/images');
+const imageDir = path.join(__dirname, '../../../public/images');
 
 function listenToGroup(groupName) {
     whatsappClient.getChats().then(chats => {

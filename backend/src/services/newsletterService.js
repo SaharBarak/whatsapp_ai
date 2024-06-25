@@ -1,4 +1,4 @@
-import { fetchGroupHeader, fetchGroupImages } from './groupService.js';
+import { fetchGroupHeader, fetchGroupImages, fetchGroupImagesFromCache } from './groupService.js';
 import { generateSummary } from '../gateways/openAIGateway.js';
 import { processImageDescriptions } from './visionService.js';
 import db from '../clients/mongoClient.js';
@@ -58,7 +58,7 @@ export async function generateNewsletterObject(groupName, prompt) {
 
     const summaryArray = newsletterText.split('\n\n').map(paragraph => paragraph.trim()).filter(paragraph => paragraph.length > 0);
 
-    const imageUrls = await fetchGroupImages(groupName);
+    const imageUrls = await fetchGroupImagesFromCache(groupName);
 
     return {
         groupName: groupHeader.name,
