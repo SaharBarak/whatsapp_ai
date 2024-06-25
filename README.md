@@ -4,23 +4,22 @@ A WhatsApp bot that generates a weekly newsletter from group chat messages, incl
 
 ## ✨ Features ✨
 
-- **Weekly Newsletter Generation**: Collects messages from the past week and generates a summary.
+- **Weekly Newsletter Generation**: Collects group messages from the past week and generates a summary.
 - **Voice Message Transcription**: Transcribes voice messages using Google Cloud Speech-to-Text.
 - **Image Description**: Describes images using Google Cloud Vision.
 - **Language Support**: Generates newsletters in Hebrew.
 - **Endpoints**: Provides endpoints to generate and send the latest newsletter.
 - **Automated Tasks**: Cron jobs for automatic newsletter generation and sending.
 - **WhatsApp Session Persistence**: Maintains the WhatsApp session between reruns to avoid blocking due to too many reconnections.
+-
 
 ## 📝 ToDo 📝
 
-- **Optimize for Hebrew**: Ensure all text processing and the generated newsletter are optimized for Hebrew.
-- **Decouple Flow Further**: Separate the flow to generate the newsletter from the flow to pull messages and organize them into a JSON file.
-- **Add Basic Styling to the Newsletter**: Initially add simple text formatting and then later convert it to a PDF.
+- **Dynamic Newsletter Styling**: Use GPT to understand context and build styling accordingly.
 - **Process Voice Messages**: Implement the transcription logic using a service like Google Cloud Speech-to-Text.
-- **Optimize the Prompt for a Funny, Cheerful Newsletter**: Enhance the prompt to make the newsletter more engaging and cheerful.
 - **Process Likes, Emojis, Links, and Social Media Posts**: Extend the message processing to include likes, emojis, links, and social media posts.
-- **Manage Space for OpenAI API Request**: Implement a method to handle a large number of messages by summarizing or chunking data before sending it to the OpenAI API.
+- **Migrate codebase to typescript**
+- **Tighten flow regarding image descriptions**
 
 
 ## 🛠️ Prerequisites 🛠️
@@ -66,6 +65,7 @@ GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
     GROUP_NAME=your-group-name
     OPENAI_API_KEY=your-openai-api-key
     GOOGLE_APPLICATION_CREDENTIALS=path-to-your-google-service-account.json
+    MONGODB_URI=your_mongo_uri_with_creds
     ```
 
 ### Running the Bot
