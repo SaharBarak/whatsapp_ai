@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import whatsappClient from './src/clients/whatsappClient.js';
-import { config } from './src/config/config.js';
+import config from './src/config/config.js';
 import newsletterRoutes from './src/routes/newsletterRoutes.js';
 import './src/handlers/eventHandlers.js'; // Ensure event handlers are initialized
 import db from './src/clients/mongoClient.js';

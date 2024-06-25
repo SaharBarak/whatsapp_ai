@@ -1,5 +1,6 @@
 import whatsappClient from '../clients/whatsappClient.js';
-import { config } from '../config/config.js';
+import config from '../config/config.js';
+import db from '../clients/mongoClient.js'
 
 function listenToGroup(groupName) {
     whatsappClient.getChats().then(chats => {
@@ -23,9 +24,9 @@ whatsappClient.on('qr', (qr) => {
 
 whatsappClient.on('message', async (msg) => {
     try {
-        const chat = await message.getChat();
+        const chat = await msg.getChat();
         if (chat.isGroup && chat.name === config.groupName) {
-            const contact = await message.getContact();
+            const contact = await msg.getContact();
             const senderName = contact.pushname || contact.number;
             console.log(`${senderName} has commented`);
 
@@ -40,7 +41,7 @@ whatsappClient.on('message', async (msg) => {
             };
     
             // Check if the message already exists in the database
-            const existingMessage = await findOne('messages', {
+            const existingMessage = await db.findOne('messages', {
                 groupName: message.groupName,
                 body: message.body,
                 sender: message.sender,
@@ -49,7 +50,7 @@ whatsappClient.on('message', async (msg) => {
     
             // Only add the message if it doesn't already exist
             if (!existingMessage) {
-                await insertOne('messages', message);
+                await db.insertOne('messages', message);
             }
             console.log(`message by ${senderName} saved.`);
 

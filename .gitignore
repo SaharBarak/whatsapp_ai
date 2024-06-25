@@ -5,3 +5,4 @@ backend/src/clients/session_data
 backend/src/cache
 node_modules
 frontend/newsletter-presentation-app/node_modules
+public
