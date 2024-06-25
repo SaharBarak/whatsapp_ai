@@ -11,7 +11,6 @@ A WhatsApp bot that generates a weekly newsletter from group chat messages, incl
 - **Endpoints**: Provides endpoints to generate and send the latest newsletter.
 - **Automated Tasks**: Cron jobs for automatic newsletter generation and sending.
 - **WhatsApp Session Persistence**: Maintains the WhatsApp session between reruns to avoid blocking due to too many reconnections.
--
 
 ## 📝 ToDo 📝
 
