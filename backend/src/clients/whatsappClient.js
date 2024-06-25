@@ -1,6 +1,4 @@
 import pkg from 'whatsapp-web.js';
-import qrcode from 'qrcode-terminal';
-import { findOne, insertOne } from '../clients/mongoClient.js';
 
 const { Client, LocalAuth } = pkg;
 

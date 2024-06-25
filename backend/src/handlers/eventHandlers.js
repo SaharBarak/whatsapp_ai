@@ -52,6 +52,14 @@ whatsappClient.on('message', async (msg) => {
                 await insertOne('messages', message);
             }
             console.log(`message by ${senderName} saved.`);
+
+            // Save images locally
+            if (msg.hasMedia && msg.type === 'image') {
+                const media = await msg.downloadMedia();
+                const imagePath = path.join(imageDir, `${msg.timestamp}.jpg`);
+                fs.writeFileSync(imagePath, media.data, 'base64');
+                console.log('Image saved:', imagePath);
+            }
         }
     } catch (error) {
         console.error('Error handling message:', error);
