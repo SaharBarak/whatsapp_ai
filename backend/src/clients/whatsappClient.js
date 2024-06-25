@@ -1,5 +1,4 @@
 import pkg from 'whatsapp-web.js';
-import qrcode from 'qrcode-terminal';
 
 const { Client, LocalAuth } = pkg;
 
@@ -19,10 +18,6 @@ const whatsappClient = new Client({
         type: 'remote',
         remotePath: 'https://raw.githubusercontent.com/wppconnect-team/wa-version/main/html/2.2412.54.html',
     }
-});
-
-whatsappClient.on('qr', (qr) => {
-    qrcode.generate(qr, { small: true });
 });
 
 export default whatsappClient;

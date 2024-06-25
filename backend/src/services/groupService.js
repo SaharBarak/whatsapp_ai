@@ -1,6 +1,15 @@
 import whatsappClient from '../clients/whatsappClient.js';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-export async function fetchGroupHeader(groupName) {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const imageDir = path.join(__dirname, '../public/images');
+
+
+async function fetchGroupHeader(groupName) {
     const chats = await whatsappClient.getChats();
     const group = chats.find(chat => chat.isGroup && chat.name === groupName);
 
@@ -52,6 +61,20 @@ async function fetchGroupImages(groupName) {
 
     return imageUrls;
 }
-export { fetchGroupHeader, fetchGroupMessages, sendGroupMessage };
+
+async function fetchGroupImagesFromCache(groupName) {
+    const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+
+    const imageFiles = fs.readdirSync(imageDir).filter(file => {
+      const filePath = path.join(imageDir, file);
+      const stats = fs.statSync(filePath);
+      return stats.mtime.getTime() >= oneWeekAgo;
+    });
+  
+    const imageUrls = imageFiles.map(file => `/images/${file}`);
+    return imageUrls;
+}
+
+export { fetchGroupHeader, fetchGroupMessages, sendGroupMessage, fetchGroupImages, fetchGroupImagesFromCache };
 
 
