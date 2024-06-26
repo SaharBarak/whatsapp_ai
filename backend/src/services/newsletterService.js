@@ -1,6 +1,5 @@
-import { fetchGroupHeader, fetchGroupImages, fetchGroupImagesFromCache } from './groupService.js';
+import { fetchGroupHeader, fetchGroupImagesFromCache } from './groupService.js';
 import { generateSummary } from '../gateways/openAIGateway.js';
-import { processImageDescriptions } from './visionService.js';
 import db from '../clients/mongoClient.js';
 
 function simplifyMessageForLog(message) {
@@ -28,6 +27,7 @@ async function fetchAndProcessMessages(groupName) {
       sender: msg.sender,
       type: msg.type,
       hasMedia: msg.hasMedia,
+      description: msg.description,
       date: new Date(msg.timestamp * 1000).toLocaleString('he-IL') // Use Hebrew locale
     }));
   
@@ -36,33 +36,40 @@ async function fetchAndProcessMessages(groupName) {
 
 export async function generateNewsletterText(groupName, prompt) {
     const recentMessages = await fetchAndProcessMessages(groupName);
-    const imageDescriptions = await processImageDescriptions(recentMessages);
 
-    const combinedMessages = [
-        ...recentMessages.filter(msg => msg.type === 'chat'),
-        ...imageDescriptions
-    ];
+    const combinedMessages = recentMessages.map(msg => {
+        if (msg.type === 'image' && msg.description) {
+            return {
+                ...msg,
+                body: `${msg.body}\n\nתיאור: ${msg.description}`
+            };
+        }
+        return msg;
+    });
 
     combinedMessages.sort((a, b) => a.timestamp - b.timestamp);
 
     const simplifiedMessagesForAPI = combinedMessages.map(msg => simplifyMessageForAPI(msg));
 
-    const finalSummary = await generateSummary(simplifiedMessagesForAPI, prompt);
+    //const finalSummary = await generateSummary(simplifiedMessagesForAPI, prompt);
 
-    return finalSummary;
+    //return finalSummary;
+    return simplifiedMessagesForAPI;
 }
 
 export async function generateNewsletterObject(groupName, prompt) {
-    const groupHeader = await fetchGroupHeader(groupName);
-    const newsletterText = await generateNewsletterText(groupName, prompt);
+    // const groupHeader = await fetchGroupHeader(groupName);
+    // const newsletterText = await generateNewsletterText(groupName, prompt);
 
-    const summaryArray = newsletterText.split('\n\n').map(paragraph => paragraph.trim()).filter(paragraph => paragraph.length > 0);
+    // const summaryArray = newsletterText.split('\n\n').map(paragraph => paragraph.trim()).filter(paragraph => paragraph.length > 0);
 
-    const imageUrls = await fetchGroupImagesFromCache(groupName);
+    // const imageUrls = await fetchGroupImagesFromCache(groupName);
 
-    return {
-        groupName: groupHeader.name,
-        summaries: summaryArray, // No visuals, just summaries
-        images: imageUrls
-    };
+    // return {
+    //     groupName: groupHeader.name,
+    //     summaries: summaryArray,
+    //     images: imageUrls
+    // };
+
+    return await generateNewsletterText(groupName, prompt);
 }

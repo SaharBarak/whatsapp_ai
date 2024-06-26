@@ -1,35 +1,28 @@
-import OpenAI from 'openai/index.js';
+import { OpenAI } from 'openai';
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 export async function generateSummary(messagesJSON, prompt) {
-    const defaultPrompt = `שלום AI! יש לי אובייקט שמייצג סיכום של כל ההודעות שהסתובבו בקבוצת הוואטסאפ שלנו במהלך השבוע האחרון. האובייקט מכיל את כל המסרים, תאריכים, ושמות השולחים.
-
-התפקיד שלך הוא לקחת את כל ההודעות מהשבוע החולף וליצור ניוזלטר שבועי מצחיק בטירוף. הסיכום צריך להיות כרונולוגי, סרקסטי ואישי. הקבוצה שלנו כוללת אנשים עם פרסונות של אנשים מבוגרים כאלטר אגו שלהם, וכולנו קשורים לקהילת פאב, חנות וינטג' ומתחם עבודה משותף. גאליה מנהלת את החנות, מתן ונועה הם המייסדים של הפאב, ברכה מנהלת את ההאב, ואסף ועוד אנשים עובדים שם. זוהי קבוצה חברית ולא קבוצת עבודה.
-
-הפורמט שתחזיר צריך להיות פסקאות מופרדות על ידי שתי שורות ריקות, בסדר כרונולוגי. ראשית, הצג את עצמך - שמך הוא חסוס.
-
-הנה כמה פרטים שיעזרו לך:
-1. סרקסטיות ושנינות מתקבלות בברכה.
-2. הקבוצה כוללת אלטר אגו של דמויות מבוגרות.
-3. כולם קשורים בדרך כלשהי לקהילה של הפאב, החנות והמתחם המשותף.
-4. זהו סיכום שבועי של כל ההודעות שהסתובבו בקבוצה.
-5. אתה יכול להוסיף אימוג׳ים כדי להוסיף צבע להודעות.
-
-בהצלחה חסוס!`;
+    const defaultPrompt = `its a summary of all messages goes around our whatsapp group, your role is to be a bot that gets all the masseges ciruclates through the group once a week for the week that has been and generate a funny as hell newsletter/weekly recap, it has to be in hebrew, it has to be chronological, you can be a sarcastic and personal, there is a thing in the group with people wearing personas of old people as their alterego, you gotta catch on it, and mainly its a group that was created naturally around a community pub and workspace and vintage shop and hub, everyone in this group is related to the business in their way, galia runs the shop, matan and noa arre the founders of the pub, bracha run the hub, asaf and other people work there but its not a work group its a friends group.
+                        asaf don't believe in ai it comments random shit trying to fail you,
+                        the format that you return is basically paragraphs seprated by two new lines, in chronological order, first present yourself, your name is חסוס(for now)
+                        lets try to create prompts for this, make sure to speak proper hebrew, you make use slang words and phrases(as long as their hebrew and israeli)`;
 
     const finalPrompt = prompt || defaultPrompt;
 
     try {
         const formattedMessages = formatMessagesForPrompt(messagesJSON);
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: `${finalPrompt}\n\n${formattedMessages}`,
-            max_tokens: 1024,
+        const response = await openai.chat.completions.create({
+            messages: [
+                { role: "system", content: finalPrompt },
+                { role: "user", content: formattedMessages }
+            ],
+            model: "gpt-4o",
+            max_tokens: 2500,
         });
-        return response.data.choices[0].text.trim();
+        return response.choices[0].message.content.trim();
     } catch (error) {
         console.error('Error generating summary:', error);
         throw error;
