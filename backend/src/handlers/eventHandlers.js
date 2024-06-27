@@ -1,5 +1,6 @@
 import whatsappClient from '../clients/whatsappClient.js';
 import config from '../config/config.js';
+import { handleHasusCommand } from '../services/openaiService.js';
 import { handleMessage, handleOutgoingMessage } from './messageHandlers.js';
 
 function listenToGroup(groupName) {
@@ -23,12 +24,19 @@ whatsappClient.on('qr', (qr) => {
 });
 
 whatsappClient.on('message', async (msg) => {
-    await handleMessage(msg);
+    if(msg.body.startsWith('/hasus ')){
+        await handleHasusCommand(msg);
+    } else {
+        await handleMessage(msg);
+    }
 });
 
 whatsappClient.on('message_create', async (msg) => {
-    // Handle the message if it is from the client itself
-    if (msg.fromMe) {
-        await handleOutgoingMessage(msg);
+    if(msg.body.startsWith('/hasus ')){
+        await handleHasusCommand(msg);
+    } else {
+        if (msg.fromMe) {
+            await handleOutgoingMessage(msg);
+        }
     }
 });

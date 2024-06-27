@@ -51,25 +51,25 @@ export async function generateNewsletterText(groupName, prompt) {
 
     const simplifiedMessagesForAPI = combinedMessages.map(msg => simplifyMessageForAPI(msg));
 
-    //const finalSummary = await generateSummary(simplifiedMessagesForAPI, prompt);
+    const finalSummary = await generateSummary(simplifiedMessagesForAPI, prompt);
 
     //return finalSummary;
-    return simplifiedMessagesForAPI;
+    return finalSummary;
 }
 
 export async function generateNewsletterObject(groupName, prompt) {
-    // const groupHeader = await fetchGroupHeader(groupName);
-    // const newsletterText = await generateNewsletterText(groupName, prompt);
+    const groupHeader = await fetchGroupHeader(groupName);
+    const newsletterText = await generateNewsletterText(groupName, prompt);
 
-    // const summaryArray = newsletterText.split('\n\n').map(paragraph => paragraph.trim()).filter(paragraph => paragraph.length > 0);
+    const summaryArray = newsletterText.split('\n\n').map(paragraph => paragraph.trim()).filter(paragraph => paragraph.length > 0);
 
-    // const imageUrls = await fetchGroupImagesFromCache(groupName);
+    const imageUrls = await fetchGroupImagesFromCache(groupName);
 
-    // return {
-    //     groupName: groupHeader.name,
-    //     summaries: summaryArray,
-    //     images: imageUrls
-    // };
+    return {
+        groupName: groupHeader.name,
+        summaries: summaryArray,
+        images: imageUrls
+    };
 
-    return await generateNewsletterText(groupName, prompt);
+    //return await generateNewsletterText(groupName, prompt);
 }

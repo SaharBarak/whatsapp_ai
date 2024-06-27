@@ -29,4 +29,15 @@ router.get('/send-newsletter', async (req, res) => {
     }
 });
 
+router.post('/text-newsletter', async (req, res) => {
+    try {
+        const groupName = process.env.GROUP_NAME;
+        const newsletterText = await generateNewsletterText(groupName);
+        res.status(200).send(newsletterText);
+        sendGroupMessage(newsletterText);
+    } catch (error) {
+        res.status(500).send(`Error generating newsletter: ${error.message}`);
+    }
+});
+
 export default router;
