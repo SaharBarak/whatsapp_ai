@@ -38,13 +38,12 @@ export async function hasusCommand (messagesJSON, prompt, executerName){
     if(prompt.length > 0) {
 
     try {
-            const formattedMessages = formatMessagesForPrompt(messagesJSON);
             const response = await openai.chat.completions.create({
                 messages: [
                     { role: "system", content: system },
                     { role: "user", content: `${executerName} has called you` },
                     { role: "user", content: prompt },
-                    { role: "user", content: formattedMessages }
+                    { role: "user", content: messagesJSON }
                 ],
                 model: "gpt-4o",
                 max_tokens: 2500,

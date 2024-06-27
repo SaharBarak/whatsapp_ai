@@ -1,12 +1,13 @@
-import db from "../clients/mongoClient";
-import hasusCommand from "../gateways/openAIGateway"
-import sendGroupMessage from "./groupService"
+import db from '../clients/mongoClient.js';
+import { hasusCommand } from "../gateways/openAIGateway.js"
+import { sendGroupMessage } from "./groupService.js"
+import config from '../config/config.js';
 
 export async function handleHasusCommand(msg){
     const contact = await msg.getContact() || null;
     const senderName = contact.name || contact.pushname || contact.number || "סהר";
     try {
-        const prompt = msg.body.replace('/hasus ', '');//`חסוס, תצטרף לשיחה על סמך ההודעות הבאות:
+        const prompt = msg.body.replace('/חסוס ', '');//`חסוס, תצטרף לשיחה על סמך ההודעות הבאות:
         // Fetch the last 100 messages
         const messages = await db.find('messages', { groupName: msg.from }, { sort: { timestamp: -1 }, limit: 100 });
         const last100Messages = messages.reverse().map(m => ({
@@ -18,11 +19,10 @@ export async function handleHasusCommand(msg){
         // Generate a response using OpenAI
         const formattedMessages = last100Messages.map(m => `${m.date} - ${m.sender}: ${m.body}`).join('\n');
         const response = await hasusCommand(formattedMessages, prompt, senderName);
-        const reply = `${senderName}, ${}`;
 
         // Send the response to the group
-        await sendGroupMessage(response.data.choices[0].text.trim());
-        console.log(`Hasus replied: ${reply}`);
+        await sendGroupMessage(config.groupName, response);
+        console.log(`Hasus replied: ${response}`);
     } catch (error) {
         console.error('Error handling /hasus command:', error);
     }

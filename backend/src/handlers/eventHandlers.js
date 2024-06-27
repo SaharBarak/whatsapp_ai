@@ -24,7 +24,7 @@ whatsappClient.on('qr', (qr) => {
 });
 
 whatsappClient.on('message', async (msg) => {
-    if(msg.body.startsWith('/hasus ')){
+    if(msg.body.startsWith('/חסוס ')){
         await handleHasusCommand(msg);
     } else {
         await handleMessage(msg);
@@ -32,7 +32,7 @@ whatsappClient.on('message', async (msg) => {
 });
 
 whatsappClient.on('message_create', async (msg) => {
-    if(msg.body.startsWith('/hasus ')){
+    if(msg.body.startsWith('/חסוס ')){
         await handleHasusCommand(msg);
     } else {
         if (msg.fromMe) {
