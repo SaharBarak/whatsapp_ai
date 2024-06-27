@@ -1,5 +1,5 @@
 import pkg from 'whatsapp-web.js';
-
+import config from '../config/config.js'
 const { Client, LocalAuth } = pkg;
 
 const sessionDir = './src/clients/session_data';
@@ -12,7 +12,7 @@ const whatsappClient = new Client({
     puppeteer: {
         headless: true,
         args: ['--no-sandbox', '--disable-gpu'],
-        executablePath: '/usr/local/bin/chromium',
+        executablePath: config.puppeteer,
     },
     webVersionCache: {
         type: 'remote',
