@@ -20,15 +20,21 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-      
+
     - name: Create directory for Google Credentials
       run: mkdir -p src/config
 
     - name: Create Google Credentials JSON
       run: echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > src/config/dodalend-bbeeb08381ae.json
 
+    - name: List directories before changing to backend
+      run: ls -la
+
     - name: Change directory to backend
       run: cd backend
+
+    - name: List directories inside backend
+      run: ls -la backend
 
     - name: Build Docker image
       run: |
@@ -38,7 +44,7 @@ jobs:
         --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
         --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
         -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
-        -f Dockerfile .
+        -f backend/Dockerfile .
 
     - name: Save Docker image to artifact
       uses: actions/upload-artifact@v2
