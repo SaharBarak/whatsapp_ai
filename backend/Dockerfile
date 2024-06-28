@@ -35,9 +35,6 @@ RUN apt-get update && apt-get install -y \
 # Copy the rest of the application
 COPY . .
 
-# Ensure the service account file is accessible
-RUN --mount=type=secret,id=google_credentials_json,dst=/app/src/config/dodalend-bbeeb08381ae.json
-
 # Expose the port the app runs on
 EXPOSE 3000
 
