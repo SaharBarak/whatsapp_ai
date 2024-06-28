@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-      
+
     - name: Create directory for Google Credentials
       run: mkdir -p src/config
 
@@ -35,7 +35,7 @@ jobs:
         --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
         --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
         -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
-        -f backend/Dockerfile backend
+        -f backend/Dockerfile .
 
     - name: Save Docker image to artifact
       uses: actions/upload-artifact@v2
