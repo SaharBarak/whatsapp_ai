@@ -39,7 +39,7 @@ COPY . .
 COPY .env .env
 
 # Ensure the service account file is accessible
-COPY src/config/dodalend-bbeeb08381ae.json src/config/dodalend-bbeeb08381ae.json
+RUN --mount=type=secret,id=google_credentials_json,dst=/app/src/config/dodalend-bbeeb08381ae.json
 
 # Expose the port the app runs on
 EXPOSE 3000
