@@ -27,23 +27,11 @@ jobs:
     - name: Create Google Credentials JSON
       run: echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > src/config/dodalend-bbeeb08381ae.json
 
-    - name: List directories before changing to backend
-      run: ls -la
-
-    - name: Change directory to backend
-      run: cd backend
-
-    - name: List directories inside backend doda
-      run: ls -la backend
-
     - name: Build Docker image
       run: |
         docker build \
         --tag ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
         backend
-
-      - name: List directories inside backend doad rachel
-      run: ls -la backend
 
     - name: Save Docker image to artifact
       run: |
@@ -52,7 +40,7 @@ jobs:
 
     - name: List directories inside backend doda rechel 2
       run: ls -la backend
-
+      
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v2
       with:
