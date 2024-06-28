@@ -33,7 +33,7 @@ jobs:
     - name: Change directory to backend
       run: cd backend
 
-    - name: List directories inside backend
+    - name: List directories inside backend doda
       run: ls -la backend
 
     - name: Build Docker image
@@ -42,7 +42,7 @@ jobs:
         --tag ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
         backend
 
-      - name: List directories inside backend
+      - name: List directories inside backend doad rachel
       run: ls -la backend
 
     - name: Save Docker image to artifact
@@ -52,7 +52,7 @@ jobs:
 
     - name: List directories inside backend
       run: ls -la backend
-      
+
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v2
       with:
