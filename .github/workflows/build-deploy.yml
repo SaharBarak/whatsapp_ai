@@ -1,9 +1,10 @@
-name: CI/CD for Docker
+name: Build, Test, and Deploy
 
 on:
   push:
     branches:
-      - '**'
+      - master
+      - main
 
 jobs:
   build:
@@ -23,30 +24,6 @@ jobs:
 
     - name: Run tests
       run: npm test
-
-    - name: Create directory for Google Credentials
-      run: mkdir -p src/config
-
-    - name: Create Google Credentials JSON
-      run: echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > src/config/dodalend-bbeeb08381ae.json
-
-    - name: Build Docker image
-      run: |
-        docker build \
-          --build-arg PUPPETEER_EXECUTABLE_PATH=${{ vars.PUPPETEER_EXECUTABLE_PATH }} \
-          --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} \
-          --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-          --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
-          -t whatsapp-ai:latest -f backend/Dockerfile backend
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
