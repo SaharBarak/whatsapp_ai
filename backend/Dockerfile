@@ -38,6 +38,17 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 3000
 
+# Set build arguments
+ARG PUPPETEER_EXECUTABLE_PATH
+ARG MONGODB_URI
+ARG OPENAI_API_KEY
+ARG GROUP_NAME
+
+# Set environment variables from build arguments
+# ENV PUPPETEER_EXECUTABLE_PATH=$PUPPETEER_EXECUTABLE_PATH
+ENV MONGODB_URI=$MONGODB_URI
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
+ENV GROUP_NAME=$GROUP_NAME
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Command to run the application
