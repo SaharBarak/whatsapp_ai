@@ -1,10 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import whatsappClient from './src/clients/whatsappClient.js';
-import config from './src/config/config.js';
-import newsletterRoutes from './src/routes/newsletterRoutes.js';
-import './src/handlers/eventHandlers.js'; // Ensure event handlers are initialized
-import db from './src/clients/mongoClient.js';
+import whatsappClient from './clients/whatsappClient.js';
+import config from './config/config.js';
+import newsletterRoutes from './routes/newsletterRoutes.js';
+import './handlers/eventHandlers.js'; // Ensure event handlers are initialized
+import db from './clients/mongoClient.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
