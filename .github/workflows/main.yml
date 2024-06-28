@@ -31,7 +31,7 @@ jobs:
       run: |
         docker build \
         --tag ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
-        -f backend \
+        backend \
         --build-arg PUPPETEER_EXECUTABLE_PATH=${{ vars.PUPPETEER_EXECUTABLE_PATH }} \
         --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} \
         --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
