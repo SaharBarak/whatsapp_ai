@@ -50,7 +50,7 @@ jobs:
         docker save ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest | gzip > whatsapp-ai-latest.tar.gz
       shell: bash
 
-    - name: List directories inside backend
+    - name: List directories inside backend doda rechel 2
       run: ls -la backend
 
     - name: Upload Docker image artifact
