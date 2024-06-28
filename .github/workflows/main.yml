@@ -40,7 +40,7 @@ jobs:
 
     - name: List directories inside backend doda rechel 2
       run: ls -la backend
-      
+
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v2
       with:
@@ -63,7 +63,10 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: docker-image
-        path: whatsapp-ai-latest.tar.gz
+        path: .
+
+    - name: List downloaded files for debugging
+      run: ls -la
 
     - name: Load Docker image from artifact
       run: |
