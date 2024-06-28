@@ -25,7 +25,9 @@ jobs:
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Build Docker image
-      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest -f backend/Dockerfile .
+      run: |
+        echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > /tmp/google_credentials.json
+        docker build --secret id=google_credentials_json,src=/tmp/google_credentials.json -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest -f backend/Dockerfile .
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest
