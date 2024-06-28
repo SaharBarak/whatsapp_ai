@@ -43,7 +43,7 @@ jobs:
         --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} \
         --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
         --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
-        -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
+        --tag ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
         --file Dockerfile .
 
 
