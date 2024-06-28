@@ -31,11 +31,7 @@ jobs:
       run: |
         docker build \
         --tag ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
-        --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} \
-        --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-        --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
-        -f backend/Dockerfile .
-# --build-arg PUPPETEER_EXECUTABLE_PATH=${{ vars.PUPPETEER_EXECUTABLE_PATH }} \
+        backend
 
     - name: Save Docker image to artifact
       run: |
@@ -67,7 +63,10 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: docker-image
-        path: whatsapp-ai-latest.tar.gz
+        path: .
+
+    - name: List downloaded files for debugging
+      run: ls -la
 
     - name: Load Docker image from artifact
       run: |
