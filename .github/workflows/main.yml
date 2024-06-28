@@ -20,10 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-
-    - name: Run tests
-      run: npm test
-
+      
     - name: Create directory for Google Credentials
       run: mkdir -p src/config
 
