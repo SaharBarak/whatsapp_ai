@@ -24,10 +24,17 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+    - name: Create Google Credentials JSON
+      run: echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > src/config/dodalend-bbeeb08381ae.json
+
     - name: Build Docker image
       run: |
-        echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > /tmp/google_credentials.json
-        docker build --secret id=google_credentials_json,src=/tmp/google_credentials.json -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest -f backend/Dockerfile .
+        docker build \
+          --build-arg PUPPETEER_EXECUTABLE_PATH=${{ vars.PUPPETEER_EXECUTABLE_PATH }} \
+          --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} \
+          --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+          --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
+          -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest -f backend/Dockerfile .
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest
