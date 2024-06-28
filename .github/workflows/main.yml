@@ -44,7 +44,7 @@ jobs:
         --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
         --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
         -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
-        -f backend/Dockerfile .
+        -f Dockerfile .
 
     - name: Save Docker image to artifact
       uses: actions/upload-artifact@v2
