@@ -21,6 +21,9 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Run tests
+      run: npm test
+
     - name: Create directory for Google Credentials
       run: mkdir -p src/config
 
@@ -28,7 +31,20 @@ jobs:
       run: echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > src/config/dodalend-bbeeb08381ae.json
 
     - name: Build Docker image
-      run: docker buildx build --build-arg PUPPETEER_EXECUTABLE_PATH=${{ vars.PUPPETEER_EXECUTABLE_PATH }} --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} -t whatsapp-ai:latest -f backend/Dockerfile backend
+      run: |
+        docker build \
+        --build-arg PUPPETEER_EXECUTABLE_PATH=${{ vars.PUPPETEER_EXECUTABLE_PATH }} \
+        --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} \
+        --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+        --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
+        -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
+        -f backend/Dockerfile backend
+
+    - name: Save Docker image to artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: docker-image
+        path: backend/whatsapp-ai:latest.tar
 
   deploy:
     needs: build
@@ -48,8 +64,14 @@ jobs:
     - name: Create Google Credentials JSON
       run: echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > src/config/dodalend-bbeeb08381ae.json
 
-    - name: Build Docker image
-      run: docker buildx build --build-arg PUPPETEER_EXECUTABLE_PATH=${{ vars.PUPPETEER_EXECUTABLE_PATH }} --build-arg MONGODB_URI=${{ secrets.MONGODB_URI }} --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} -t whatsapp-ai:latest -f backend/Dockerfile backend
+    - name: Download Docker image artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: docker-image
+        path: backend/whatsapp-ai:latest.tar
+
+    - name: Load Docker image from artifact
+      run: docker load -i backend/whatsapp-ai:latest.tar
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest
