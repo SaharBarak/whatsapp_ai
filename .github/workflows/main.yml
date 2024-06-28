@@ -20,12 +20,15 @@ jobs:
 
     - name: Install dependencies
       run: npm install
-
+      
     - name: Create directory for Google Credentials
       run: mkdir -p src/config
 
     - name: Create Google Credentials JSON
       run: echo "${{ secrets.GOOGLE_CREDENTIALS_JSON }}" > src/config/dodalend-bbeeb08381ae.json
+
+    - name: Change directory to backend
+      run: cd backend
 
     - name: Build Docker image
       run: |
@@ -35,13 +38,13 @@ jobs:
         --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
         --build-arg GROUP_NAME=${{ vars.GROUP_NAME }} \
         -t ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest \
-        -f ../backend/Dockerfile .
+        -f Dockerfile .
 
     - name: Save Docker image to artifact
       uses: actions/upload-artifact@v2
       with:
         name: docker-image
-        path: ../backend/whatsapp-ai:latest.tar
+        path: whatsapp-ai:latest.tar
 
   deploy:
     needs: build
@@ -65,10 +68,10 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: docker-image
-        path: backend/whatsapp-ai:latest.tar
+        path: whatsapp-ai:latest.tar
 
     - name: Load Docker image from artifact
-      run: docker load -i backend/whatsapp-ai:latest.tar
+      run: docker load -i whatsapp-ai:latest.tar
 
     - name: Push Docker image to Docker Hub
       run: docker push ${{ secrets.DOCKER_USERNAME }}/whatsapp-ai:latest
