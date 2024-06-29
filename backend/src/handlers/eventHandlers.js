@@ -38,11 +38,7 @@ whatsappClient.on('disconnected', (reason) => {
 
 
 whatsappClient.on('message', async (msg) => {
-    if(msg.body.startsWith('/חסוס ')){
-        await handleHasusCommand(msg);
-    } else {
-        await handleMessage(msg);
-    }
+    await handleMessage(msg);
 });
 
 whatsappClient.on('message_create', async (msg) => {

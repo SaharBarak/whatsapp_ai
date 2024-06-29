@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+RUN sed -i "s/\('MediaPrep'\)/'prepRawMedia'/" ./node_modules/whatsapp-web.js/src/util/Injected.js
+RUN sed -i "s/window.Store.DownloadManager.downloadAndDecrypt/\(window.Store.DownloadManager.downloadAndMaybeDecrypt || window.Store.DownloadManager.downloadAndDecrypt\)/" ./node_modules/whatsapp-web.js/src/structures/Message.js
+
 # Install Puppeteer dependencies
 RUN apt-get update && apt-get install -y \
     wget \
@@ -41,7 +44,7 @@ EXPOSE 3000
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Command to run the application
-CMD ["node", "src/index.js"]
+CMD ["npm", "start"]
 
 # Expose the port the app runs on
 EXPOSE 3000
