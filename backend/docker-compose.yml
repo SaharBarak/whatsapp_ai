@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    image: moonputa/whatsapp-ai:latest
+    container_name: whatsapp-ai
     ports:
       - '3000:3000'
     environment:
@@ -13,8 +14,12 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./session_data:/app/src/clients/session_data
       
   watchtower:
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      

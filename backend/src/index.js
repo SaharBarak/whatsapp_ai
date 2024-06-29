@@ -26,7 +26,6 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     db.connectDb();
     whatsappClient.initialize();
-    console.log("whatsapp should have intiated");
 });
 
 export default app;

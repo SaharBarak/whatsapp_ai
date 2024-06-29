@@ -10,6 +10,9 @@ COPY package*.json ./
 # Install dependencies
 RUN npm install
 
+RUN sed -i "s/\('MediaPrep'\)/'prepRawMedia'/" ./node_modules/whatsapp-web.js/src/util/Injected.js
+RUN sed -i "s/window.Store.DownloadManager.downloadAndDecrypt/\(window.Store.DownloadManager.downloadAndMaybeDecrypt || window.Store.DownloadManager.downloadAndDecrypt\)/" ./node_modules/whatsapp-web.js/src/structures/Message.js
+
 # Install Puppeteer dependencies
 RUN apt-get update && apt-get install -y \
     wget \
