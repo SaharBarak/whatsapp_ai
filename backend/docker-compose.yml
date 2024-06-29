@@ -6,7 +6,6 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - PORT=${PORT}
       - GROUP_NAME=${GROUP_NAME}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - GOOGLE_CREDENTIALS_JSON=${GOOGLE_CREDENTIALS_JSON}
