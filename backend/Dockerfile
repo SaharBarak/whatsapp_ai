@@ -38,17 +38,10 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Copy the setup script
-COPY /app/setup.sh /app/setup.sh
-
-# Ensure the setup script is executable
-RUN chmod +x /app/setup.sh
-
-
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Command to run the application
-CMD ["/app/setup.sh", "&&", "node", "src/index.js"]
+CMD ["node", "src/index.js"]
 
 # Expose the port the app runs on
 EXPOSE 3000
