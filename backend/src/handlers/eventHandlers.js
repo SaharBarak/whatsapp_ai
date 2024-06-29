@@ -21,7 +21,21 @@ whatsappClient.on('ready', () => {
 
 whatsappClient.on('qr', (qr) => {
     qrcode.generate(qr, { small: true });
+    console.log(qr);
 });
+
+whatsappClient.on('authenticated', () => {
+    console.log('AUTHENTICATED');
+});
+
+whatsappClient.on('auth_failure', msg => {
+    console.error('AUTHENTICATION FAILURE', msg);
+});
+
+whatsappClient.on('disconnected', (reason) => {
+    console.log('Client was logged out', reason);
+});
+
 
 whatsappClient.on('message', async (msg) => {
     if(msg.body.startsWith('/חסוס ')){
