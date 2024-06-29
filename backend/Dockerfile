@@ -41,7 +41,7 @@ EXPOSE 3000
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Command to run the application
-CMD ["node", "src/index.js"]
+CMD ["npm", "start"]
 
 # Expose the port the app runs on
 EXPOSE 3000
