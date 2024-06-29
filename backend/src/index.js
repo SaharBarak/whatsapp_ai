@@ -11,7 +11,38 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config();
+// Directory to store secrets
+const SECRET_DIR = '/app/secrets';
+
+// Function to read secret from a file
+const readSecret = (secretName) => {
+  try {
+    const secretPath = path.join(SECRET_DIR, secretName);
+    return fs.readFileSync(secretPath, 'utf8').trim();
+  } catch (err) {
+    console.error(`Error reading secret ${secretName}:`, err);
+    return null;
+  }
+};
+
+// Load secrets
+const openaiApiKey = readSecret('OPENAI_API_KEY') || process.env.OPENAI_API_KEY;
+const googleCredentials = readSecret('GOOGLE_CREDENTIALS_JSON') || process.env.GOOGLE_APPLICATION_CREDENTIALS;
+const mongoUri = readSecret('MONGODB_URI') || process.env.MONGODB_URI;
+const groupName = readSecret('GROUP_NAME') || process.env.GROUP_NAME;
+
+// Validate secrets
+if (!openaiApiKey || !googleCredentials || !mongoUri || !groupName) {
+  console.error('Missing required secrets. Ensure all secrets are provided.');
+  process.exit(1);
+}
+
+// Save secrets to environment variables
+process.env.OPENAI_API_KEY = openaiApiKey;
+process.env.GOOGLE_APPLICATION_CREDENTIALS = googleCredentials;
+process.env.MONGODB_URI = mongoUri;
+process.env.GROUP_NAME = groupName;
+
 const app = express();
 
 app.use(express.json());
