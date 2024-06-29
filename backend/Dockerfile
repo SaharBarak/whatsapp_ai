@@ -38,18 +38,17 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Set build arguments
-ARG PUPPETEER_EXECUTABLE_PATH
-ARG MONGODB_URI
-ARG OPENAI_API_KEY
-ARG GROUP_NAME
+# Copy the setup script
+COPY setup.sh /app/setup.sh
 
-# Set environment variables from build arguments
-# ENV PUPPETEER_EXECUTABLE_PATH=$PUPPETEER_EXECUTABLE_PATH
-ENV MONGODB_URI=$MONGODB_URI
-ENV OPENAI_API_KEY=$OPENAI_API_KEY
-ENV GROUP_NAME=$GROUP_NAME
+# Ensure the setup script is executable
+RUN chmod +x /app/setup.sh
+
+
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 # Command to run the application
-CMD ["node", "src/index.js"]
+CMD ["/app/setup.sh", "&&", "node", "src/index.js"]
+
+# Expose the port the app runs on
+EXPOSE 3000
