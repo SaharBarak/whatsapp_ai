@@ -39,7 +39,7 @@ COPY . .
 EXPOSE 3000
 
 # Copy the setup script
-COPY setup.sh /app/setup.sh
+COPY /app/setup.sh /app/setup.sh
 
 # Ensure the setup script is executable
 RUN chmod +x /app/setup.sh
