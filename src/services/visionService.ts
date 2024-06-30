@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const imageDir = path.join(__dirname, '../../../public/images');
+const imageDir = path.join(__dirname, '../../public/images');
 
 interface Message {
   hasMedia: boolean;
@@ -14,7 +14,9 @@ interface Message {
   body: string;
 }
 
-async function processImageDescriptions(recentMessages: Message[]): Promise<Message[]> {
+async function processImageDescriptions(
+  recentMessages: Message[]
+): Promise<Message[]> {
   const imageMessages = recentMessages.filter((msg) => msg.hasMedia && msg.type === 'image');
 
   const imageDescriptions = await Promise.all(
@@ -42,4 +44,6 @@ async function processImageDescriptions(recentMessages: Message[]): Promise<Mess
   return imageDescriptions;
 }
 
-export { processImageDescriptions };
+export { 
+  processImageDescriptions 
+};

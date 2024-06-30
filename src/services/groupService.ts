@@ -6,7 +6,7 @@ import { Chat as WWebJSChat, Message as WWebJSMessage } from 'whatsapp-web.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const imageDir = path.join(__dirname, '../../../public/images');
+const imageDir = path.join(__dirname, '../../public/images');
 
 interface GroupHeader {
   name: string;
@@ -20,7 +20,9 @@ type Group = WWebJSChat & {
   fetchMessages: (options: { limit: number }) => Promise<WWebJSMessage[]>;
 };
 
-async function fetchGroupHeader(groupName: string): Promise<GroupHeader> {
+async function fetchGroupHeader(
+  groupName: string
+): Promise<GroupHeader> {
   const chats: WWebJSChat[] = await whatsappClient.getChats();
   const group = chats.find((chat): chat is Group => chat.isGroup && chat.name === groupName);
   if (group) {
@@ -31,7 +33,9 @@ async function fetchGroupHeader(groupName: string): Promise<GroupHeader> {
   throw new Error('Group not found');
 }
 
-async function fetchGroupMessages(groupName: string): Promise<Message[]> {
+async function fetchGroupMessages(
+  groupName: string
+): Promise<Message[]> {
   const chats: WWebJSChat[] = await whatsappClient.getChats();
   const group = chats.find((chat): chat is Group => chat.isGroup && chat.name === groupName);
   if (group) {
@@ -42,7 +46,10 @@ async function fetchGroupMessages(groupName: string): Promise<Message[]> {
   throw new Error('Group not found');
 }
 
-async function sendGroupMessage(groupName: string, message: string): Promise<void> {
+async function sendGroupMessage(
+  groupName: string,
+   message: string
+  ): Promise<void> {
   const chats: WWebJSChat[] = await whatsappClient.getChats();
   const group = chats.find((chat): chat is Group => chat.isGroup && chat.name === groupName);
   if (group) {
@@ -52,7 +59,8 @@ async function sendGroupMessage(groupName: string, message: string): Promise<voi
   }
 }
 
-async function fetchGroupImagesFromCache(): Promise<string[]> {
+async function fetchGroupImagesFromCache(
+): Promise<string[]> {
   const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
   const imageFiles = fs.readdirSync(imageDir).filter((file) => {
     const filePath = path.join(imageDir, file);
@@ -63,4 +71,9 @@ async function fetchGroupImagesFromCache(): Promise<string[]> {
   return imageUrls;
 }
 
-export { fetchGroupHeader, fetchGroupMessages, sendGroupMessage, fetchGroupImagesFromCache };
+export { 
+  fetchGroupHeader,
+  fetchGroupMessages, 
+  sendGroupMessage,
+  fetchGroupImagesFromCache 
+};
