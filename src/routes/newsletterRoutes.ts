@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
-import { generateNewsletterObject, generateNewsletterText } from '../services/newsletterService';
-import { sendGroupMessage } from '../services/groupService';
-import config from '../config/config';
+import { generateNewsletterObject, generateNewsletterText } from '../services/newsletterService.js';
+import { sendGroupMessage } from '../services/groupService.js';
+import config from '../config/config.js';
 
 const router = express.Router();
 

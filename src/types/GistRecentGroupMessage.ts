@@ -1,4 +1,4 @@
-import { RecentGroupMessage } from './RecentGroupMessage';
+import { RecentGroupMessage } from './RecentGroupMessage.js';
 
 export interface GistRecentGroupMessage {
   body: string;

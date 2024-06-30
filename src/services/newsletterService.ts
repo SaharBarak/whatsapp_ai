@@ -1,8 +1,8 @@
-import { fetchGroupHeader, fetchGroupImagesFromCache } from './groupService';
-import { generateSummary } from '../gateways/openAIGateway';
-import db from '../clients/mongoClient';
-import { RecentGroupMessage, toSimplifiedAPI } from '../types/RecentGroupMessage';
-import { SimplifiedMessageForAPI } from '../types/SimplifiedMessageForAPI';
+import { fetchGroupHeader, fetchGroupImagesFromCache } from './groupService.js';
+import { generateSummary } from '../gateways/openAIGateway.js';
+import db from '../clients/mongoClient.js';
+import { RecentGroupMessage, toSimplifiedAPI } from '../types/RecentGroupMessage.js';
+import { SimplifiedMessageForAPI } from '../types/SimplifiedMessageForAPI.js';
 
 async function fetchAndProcessMessages(
   groupName: string

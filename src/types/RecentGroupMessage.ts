@@ -1,5 +1,5 @@
-import { GistRecentGroupMessage } from './GistRecentGroupMessage';
-import { SimplifiedMessageForAPI } from './SimplifiedMessageForAPI';
+import { GistRecentGroupMessage } from './GistRecentGroupMessage.js';
+import { SimplifiedMessageForAPI } from './SimplifiedMessageForAPI.js';
 
 export interface RecentGroupMessage {
   groupName: string;

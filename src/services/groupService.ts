@@ -1,4 +1,4 @@
-import whatsappClient from '../clients/whatsappClient';
+import whatsappClient from '../clients/whatsappClient.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
