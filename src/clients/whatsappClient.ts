@@ -16,7 +16,7 @@ const whatsappClient = new Client({
   puppeteer: {
     headless: true,
     args: ['--no-sandbox', '--disable-gpu'],
-    executablePath: '/usr/local/bin/chromium',
+    executablePath: config.puppeteer,
   },
   webVersionCache: {
     type: 'remote',
