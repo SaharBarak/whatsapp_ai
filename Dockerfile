@@ -35,19 +35,14 @@ RUN apt-get update && apt-get install -y \
     chromium \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy the rest of the application
 COPY . .
 
 RUN mkdir public
 RUN mkdir public/images
-
-# Expose the port the app runs on
-EXPOSE 3000
+RUN npm run build
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Command to run the application
-CMD ["node", "dist/server.js"]
-
-# Expose the port the app runs on
 EXPOSE 3000
+
+CMD ["node", "dist/server.js"]

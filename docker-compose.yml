@@ -9,12 +9,10 @@ services:
     environment:
       - GROUP_NAME=${GROUP_NAME}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - GOOGLE_CREDENTIALS_JSON=${GOOGLE_CREDENTIALS_JSON}
       - MONGODB_URI=${MONGODB_URI}
+      - GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/google_credentials_secret
+
     volumes:
-      - .:/app
-      - /app/node_modules
-      - ./src:/app/src
       - ./public:/app/public
       - ./session_data:/app/src/clients/session_data
       
