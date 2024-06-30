@@ -38,6 +38,9 @@ RUN apt-get update && apt-get install -y \
 # Copy the rest of the application
 COPY . .
 
+RUN mkdir public
+RUN mkdir public/images
+
 # Expose the port the app runs on
 EXPOSE 3000
 
