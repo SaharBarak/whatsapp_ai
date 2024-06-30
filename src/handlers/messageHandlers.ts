@@ -1,12 +1,12 @@
-import { insertOne, findOne } from '../clients/mongoClient';
-import { describeImage } from '../gateways/vertexGateway';
-import config from '../config/config';
+import { insertOne, findOne } from '../clients/mongoClient.js';
+import { describeImage } from '../gateways/vertexGateway.js';
+import config from '../config/config.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { Message, Contact, Chat } from 'whatsapp-web.js';
-import { RecentGroupMessage } from '../types/RecentGroupMessage';
-import { fromGroupMessage } from '../types/predicates/fromGroupMessage';
+import { RecentGroupMessage } from '../types/RecentGroupMessage.js';
+import { fromGroupMessage } from '../types/predicates/fromGroupMessage.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

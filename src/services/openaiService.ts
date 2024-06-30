@@ -1,7 +1,7 @@
-import db from '../clients/mongoClient';
-import { hasusCommand } from '../gateways/openAIGateway';
-import { sendGroupMessage } from './groupService';
-import config from '../config/config';
+import db from '../clients/mongoClient.js';
+import { hasusCommand } from '../gateways/openAIGateway.js';
+import { sendGroupMessage } from './groupService.js';
+import config from '../config/config.js';
 
 interface Message {
   body: string;

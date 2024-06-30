@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
-import whatsappClient from './clients/whatsappClient';
-import config from './config/config';
-import newsletterRoutes from './routes/newsletterRoutes';
-import db from './clients/mongoClient';
+import whatsappClient from './clients/whatsappClient.js';
+import config from './config/config.js';
+import newsletterRoutes from './routes/newsletterRoutes.js';
+import db from './clients/mongoClient.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 

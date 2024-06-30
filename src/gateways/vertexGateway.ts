@@ -1,5 +1,5 @@
 import { ImageAnnotatorClient } from '@google-cloud/vision';
-import config from '../config/config';
+import config from '../config/config.js';
 
 const visionClient = new ImageAnnotatorClient({
   keyFilename: config.googleCredentials,

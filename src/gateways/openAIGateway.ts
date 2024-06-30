@@ -1,5 +1,5 @@
 import { OpenAI } from 'openai';
-import { GistRecentGroupMessage } from '../types/GistRecentGroupMessage'; 
+import { GistRecentGroupMessage } from '../types/GistRecentGroupMessage.js'; 
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
