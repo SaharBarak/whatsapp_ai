@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app:
+    image: moonputa/whatsapp-ai:latest
+    container_name: whatsapp-ai
+    ports:
+      - '3000:3000'
+    environment:
+      - GROUP_NAME=${GROUP_NAME}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_CREDENTIALS_JSON=${GOOGLE_CREDENTIALS_JSON}
+      - MONGODB_URI=${MONGODB_URI}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./src:/app/src
+      - ./public:/app/public
+      - ./session_data:/app/src/clients/session_data
+      
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      

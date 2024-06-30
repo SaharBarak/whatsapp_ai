@@ -1,0 +1,6 @@
+node_modules
+dist
+src/config/dodalend-bbeeb08381ae.json
+src/clients/session_data
+src/cache
+.env
