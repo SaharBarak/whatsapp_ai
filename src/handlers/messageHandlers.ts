@@ -100,7 +100,7 @@ export async function handleImageMessage(
   const existingMessage = await findOne('messages', {
     groupName: message.groupName,
     body: message.body,
-    sender: message.sender,
+    sender: message.senderName,
     timestamp: message.timestamp,
   });
 
