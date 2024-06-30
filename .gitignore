@@ -1,8 +1,6 @@
-backend/node_modules
-backend/.env
-backend/src/config/dodalend-bbeeb08381ae.json
-backend/src/clients/session_data
-backend/src/cache
 node_modules
-frontend/newsletter-presentation-app/node_modules
-public
+dist
+src/config/dodalend-bbeeb08381ae.json
+src/clients/session_data
+src/cache
+.env
