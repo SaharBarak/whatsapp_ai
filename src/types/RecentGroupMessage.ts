@@ -6,7 +6,6 @@ export interface RecentGroupMessage {
   senderName: string;
   body: string;
   timestamp: number;
-  sender: string;
   type: string;
   hasMedia: boolean;
   description?: string;
@@ -17,7 +16,7 @@ export function toGist(message: RecentGroupMessage): GistRecentGroupMessage {
   return {
     body: message.body,
     timestamp: message.timestamp,
-    sender: message.sender,
+    sender: message.senderName,
     type: message.type,
     date: message.date,
   };
@@ -27,7 +26,7 @@ export function toSimplifiedAPI(message: RecentGroupMessage): SimplifiedMessageF
   return {
     body: message.body,
     timestamp: message.timestamp,
-    sender: message.sender,
+    sender: message.senderName,
     type: message.type,
     date: message.date,
   };

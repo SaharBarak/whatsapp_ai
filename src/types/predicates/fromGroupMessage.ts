@@ -4,9 +4,9 @@ import { RecentGroupMessage } from '../RecentGroupMessage';
 export function fromGroupMessage(msg: Message, senderName: string): RecentGroupMessage {
   return {
     groupName: msg.from,
+    senderName: senderName, // Add the 'senderName' property
     body: msg.body,
     timestamp: msg.timestamp,
-    sender: senderName,
     type: msg.type,
     hasMedia: msg.hasMedia,
     date: new Date(msg.timestamp * 1000).toISOString(),

@@ -20,7 +20,6 @@ export function toRecent(
     senderName,
     body: message.body,
     timestamp: message.timestamp,
-    sender: message.sender,
     type: message.type,
     hasMedia,
     description,
