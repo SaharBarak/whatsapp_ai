@@ -5,8 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "start": "tsx src/server.ts",
-    "build": "tsx",
-    "serve": "node dist/server.ts",
+    "build": "tsc",
+    "serve": "tsx dist/server.ts",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "lint:fix": "tslint --fix -p tsconfig.json -c tslint.json"
   },
