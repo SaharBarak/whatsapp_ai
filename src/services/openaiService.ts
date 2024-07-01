@@ -21,7 +21,7 @@ export async function handleHasusCommand(
     const documents = await db.find(
       'messages',
       { groupName: msg.from },
-      { sort: { timestamp: -1 }, limit: 100 },
+      { sort: { timestamp: -1 }, limit: 30 },
     );
 
     // Convert documents to Message type

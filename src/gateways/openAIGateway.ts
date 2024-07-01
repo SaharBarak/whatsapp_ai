@@ -44,7 +44,7 @@ export async function hasusCommand(
   executerName: string,
 ): Promise<string> {
   const time = Date.now();
-  const system = `You are an AI that is connected to our whatsapp group. its a summary of the last 100 messages went around our whatsapp group, figure out what they want from you, 
+  const system = `You are an AI that is connected to our whatsapp group, your name is hasus. its a summary of the last 30 messages went around our whatsapp group, figure out what they want from you, 
                         the date and time now is ${time}, understand the time and the chronological behaiviour of the messages, you can be a sarcastic and personal.
                         its a group that was created naturally around a community pub and workspace and vintage shop and hub, everyone in this group is related to the business in their way, galia runs the shop,
                         matan and noa are the founders of the pub, bracha runs the hub, asaf and other people work there but its not a work group its a friends group
@@ -61,7 +61,7 @@ export async function hasusCommand(
           { role: 'user', content: prompt },
           { role: 'user', content: messagesJSON },
         ],
-        max_tokens: 2500,
+        max_tokens: 5000,
       });
 
       if (response.choices[0].message.content) {
