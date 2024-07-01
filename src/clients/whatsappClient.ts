@@ -36,11 +36,14 @@ whatsappClient.on('qr', (qr: string) => {
 });
 
 whatsappClient.on('message', async (msg: any) => {
-  await handleMessage(msg);
+  if (msg.body.startsWith('/חסוס ')) {
+    await handleHasusCommand(msg);
+  } else {
+    await handleMessage(msg);
 });
 
 whatsappClient.on('message_create', async (msg: any) => {
-  if (msg.body.startsWith('/חסוס ')) {
+  if (msg.body.startsWith('/חסוס ') && msg.contact.isMe) {
     await handleHasusCommand(msg);
   } else {
     if (msg.fromMe) {
