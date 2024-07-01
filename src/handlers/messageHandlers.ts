@@ -11,6 +11,7 @@ import { fromGroupMessage } from '../types/predicates/fromGroupMessage.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const imageDir = path.join(__dirname, '../../../public/images');
+const HASUS_IDENTIFIER = "[חסוס]";
 
 // Ensure the directory exists
 if (!fs.existsSync(imageDir)) {
@@ -41,6 +42,10 @@ export async function handleMessage(
 export async function handleOutgoingMessage(
   msg: Message
 ) {
+  if (msg.body.includes(HASUS_IDENTIFIER)) {
+    console.log("Skipping message from חסוס");
+    return;
+  }
   try {
     const chat: Chat = await msg.getChat();
     if (chat.isGroup && chat.name === config.groupName) {

@@ -6,6 +6,8 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 });
 
+const HASUS_IDENTIFIER = "[חסוס]";
+
 export async function generateSummary(
   messagesJSON: GistRecentGroupMessage[],
   prompt?: string,
@@ -44,35 +46,53 @@ export async function hasusCommand(
   executerName: string,
 ): Promise<string> {
   const time = Date.now();
-  const system = `You are an AI that is connected to our whatsapp group, your name is hasus. its a summary of the last 30 messages went around our whatsapp group, figure out what they want from you, 
+  const system = `You are an AI that is connected to our whatsapp group, your name is חסוס. its a summary of the last 30 messages went around our whatsapp group, figure out what they want from you, 
                         the date and time now is ${time}, understand the time and the chronological behaiviour of the messages, you can be a sarcastic and personal.
                         its a group that was created naturally around a community pub and workspace and vintage shop and hub, everyone in this group is related to the business in their way, galia runs the shop,
                         matan and noa are the founders of the pub, bracha runs the hub, asaf and other people work there but its not a work group its a friends group
                         asaf don't believe in ai and comments random shit trying to fail you,
-                        make sure to speak proper hebrew, you make use slang words and phrases(as long as they're hebrew and israeli)`;
+                        make sure to speak proper hebrew, you make use slang words and phrases(as long as they're hebrew and israeli)
+                        try to keep your responses short unless they ask you for a newsletter`;
 
-  if (prompt.length > 0) {
+  console.log(prompt, executerName, messagesJSON);
+
+  let response;
     try {
-      const response = await openai.chat.completions.create({
-        model: 'gpt-4',
-        messages: [
-          { role: 'system', content: system },
-          { role: 'user', content: `${executerName} has called you` },
-          { role: 'user', content: prompt },
-          { role: 'user', content: messagesJSON },
-        ],
-        max_tokens: 5000,
-      });
+      if (prompt.length === 0) {
+        response = await openai.chat.completions.create({
+          model: 'gpt-4o',
+          messages: [
+            { role: 'system', content: system },
+            { role: 'user', content: `${executerName} has called you` },
+            { role: 'user', content: prompt },
+            { role: 'user', content: messagesJSON },
+          ],
+          max_tokens: 5000,
+        });
+      } else {
+         response = await openai.chat.completions.create({
+          model: 'gpt-4o',
+          messages: [
+            { role: 'system', content: prompt },
+            { role: 'user', content: `${executerName} has called you` },
+            { role: 'user', content: `speak proper hebrew, you may make use of slang words and phrases(as long as they're hebrew and israeli` },
+            { role: 'user', content: 'You are an AI that is connected to our whatsapp group, your name is חסוס.'},
+            { role: 'user', content: messagesJSON },
+          ],
+          max_tokens: 5000,
+        });
+      }
 
       if (response.choices[0].message.content) {
-        return response.choices[0].message.content.trim();
+        return `${HASUS_IDENTIFIER}\n${response.choices[0].message.content.trim()}`;
+      } else {
+        throw new Error('No response from OpenAI');
       }
-      throw new Error('No response from OpenAI');
+
     } catch (error) {
       console.error('Error generating response:', error);
       throw error;
     }
-  }
   return '';
 }
 
