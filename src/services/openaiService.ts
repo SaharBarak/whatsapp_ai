@@ -2,6 +2,7 @@ import db from '../clients/mongoClient.js';
 import { hasusCommand } from '../gateways/openAIGateway.js';
 import { sendGroupMessage } from './groupService.js';
 import config from '../config/config.js';
+import WAWebJS from 'whatsapp-web.js';
 
 interface Message {
   body: string;
@@ -10,18 +11,18 @@ interface Message {
 }
 
 export async function handleHasusCommand(
-  msg: any
+  msg: WAWebJS.Message
 ): Promise<void> {
   const contact = (await msg.getContact()) || null;
   const senderName = contact.name || contact.pushname || contact.number || 'סהר';
 
   try {
     const prompt = msg.body.replace('/חסוס ', '');
-    // Fetch the last 100 messages
+    // Fetch the last 30 messages
     const documents = await db.find(
       'messages',
       { groupName: msg.from },
-      { sort: { timestamp: -1 }, limit: 30 },
+      { sort: { timestamp: -1 }, limit: 100 },
     );
 
     // Convert documents to Message type
@@ -41,8 +42,8 @@ export async function handleHasusCommand(
     const formattedMessages = last100Messages
       .map((m) => `${m.date} - ${m.sender}: ${m.body}`)
       .join('\n');
+      
     const response = await hasusCommand(formattedMessages, prompt, senderName);
-
     // Send the response to the group
     await sendGroupMessage(config.groupName as string, response);
     console.log(`Hasus replied: ${response}`);
