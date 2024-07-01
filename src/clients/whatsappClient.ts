@@ -50,6 +50,7 @@ whatsappClient.on('message_create', async (msg: any) => {
 });
 
 async function listenToGroup(groupName: string) {
+  console.log(`trying to connect ${groupName}`);
   const chats = await whatsappClient.getChats();
   const group = chats.find((chat) => chat.isGroup && chat.name === groupName);
   if (group) {
