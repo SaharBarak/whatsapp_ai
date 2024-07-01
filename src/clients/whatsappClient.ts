@@ -40,6 +40,7 @@ whatsappClient.on('message', async (msg: any) => {
     await handleHasusCommand(msg);
   } else {
     await handleMessage(msg);
+  }
 });
 
 whatsappClient.on('message_create', async (msg: any) => {
