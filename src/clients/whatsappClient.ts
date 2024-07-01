@@ -1,7 +1,7 @@
 import config from '../config/config.js';
 import { handleHasusCommand } from '../services/openaiService.js';
 import { handleMessage, handleOutgoingMessage } from '../handlers/messageHandlers.js';
-import pkg from 'whatsapp-web.js';
+import pkg, { Message } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 
 const { Client, LocalAuth } = pkg;
@@ -35,7 +35,7 @@ whatsappClient.on('qr', (qr: string) => {
   console.log(qr);
 });
 
-whatsappClient.on('message', async (msg: any) => {
+whatsappClient.on('message', async (msg: Message) => {
   if (msg.body.startsWith('/חסוס ')) {
     await handleHasusCommand(msg);
   } else {
@@ -43,8 +43,8 @@ whatsappClient.on('message', async (msg: any) => {
   }
 });
 
-whatsappClient.on('message_create', async (msg: any) => {
-  if (msg.body.startsWith('/חסוס ') && msg.contact.isMe) {
+whatsappClient.on('message_create', async (msg: Message) => {
+  if (msg.body.startsWith('/חסוס ') && msg.fromMe) {
     await handleHasusCommand(msg);
   } else {
     if (msg.fromMe) {
