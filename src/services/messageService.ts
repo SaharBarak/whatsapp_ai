@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { Message, Contact, Chat } from 'whatsapp-web.js';
 import { RecentGroupMessage } from '../types/RecentGroupMessage.js';
 import { fromGroupMessage } from '../types/predicates/fromGroupMessage.js';
+import { performSearch } from './searchService';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

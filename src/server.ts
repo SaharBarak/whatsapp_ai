@@ -3,6 +3,7 @@ import whatsappClient from './clients/whatsappClient.js';
 import config from './config/config.js';
 import newsletterRoutes from './routes/newsletterRoutes.js';
 import db from './clients/mongoClient.js';
+import './events/groupListener.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
