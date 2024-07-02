@@ -18,11 +18,11 @@ export async function handleHasusCommand(
 
   try {
     const prompt = msg.body.replace('/חסוס ', '');
-    // Fetch the last 30 messages
+    // Fetch the last 25 messages
     const documents = await db.find(
       'messages',
       { groupName: msg.from },
-      { sort: { timestamp: -1 }, limit: 100 },
+      { sort: { timestamp: -1 }, limit: 25 },
     );
 
     // Convert documents to Message type
@@ -32,14 +32,14 @@ export async function handleHasusCommand(
       timestamp: doc.timestamp as number,
     }));
 
-    const last100Messages = messages.reverse().map((m) => ({
+    const last25Messages = messages.reverse().map((m) => ({
       body: m.body,
       sender: m.sender,
       date: new Date(m.timestamp * 1000).toLocaleString('he-IL'),
     }));
 
     // Generate a response using OpenAI
-    const formattedMessages = last100Messages
+    const formattedMessages = last25Messages
       .map((m) => `${m.date} - ${m.sender}: ${m.body}`)
       .join('\n');
       
