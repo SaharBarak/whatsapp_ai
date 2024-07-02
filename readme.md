@@ -1,7 +1,7 @@
 #  WhatsApp AI Group Assistant - Hasus
 
 ## Overview
-חסוס is an AI-powered group assistant designed for WhatsApp groups. Leveraging advanced natural language processing and machine learning, חסוס enhances group interactions by automating searches, providing data insights, and adding a touch of humor. It keeps the group lively by participating in conversations and generates weekly summaries of group activities.
+is an AI-powered group assistant designed for WhatsApp groups. Leveraging advanced natural language processing and machine learning, חסוס enhances group interactions by automating searches, providing data insights, and adding a touch of humor. It keeps the group lively by participating in conversations and generates weekly summaries of group activities.
 
 ## Features
 - **Automated Searches:** Uses SerpAPI to fetch relevant information and provide data insights.
