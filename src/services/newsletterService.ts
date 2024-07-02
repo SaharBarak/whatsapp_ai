@@ -1,5 +1,5 @@
 import { fetchGroupHeader, fetchGroupImagesFromCache } from './groupService.js';
-import { generateSummary } from '../gateways/openAIGateway.js';
+import { generateSummary } from './openaiService.js';
 import db from '../clients/mongoClient.js';
 import { RecentGroupMessage, toSimplifiedAPI } from '../types/RecentGroupMessage.js';
 import { SimplifiedMessageForAPI } from '../types/SimplifiedMessageForAPI.js';

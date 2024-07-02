@@ -1,11 +1,10 @@
 import whatsappClient from "../clients/whatsappClient.js";
 import config from "../config/config.js";
-import { handleHasusCommand } from '../services/openaiService.js';
-import { handleMessage, handleOutgoingMessage } from '../services/messageService.js';
+import { handleHasusCommand, handleMessage, handleOutgoingMessage } from '../services/messageService.js';
 import pkg, { Message } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
-import { performSearch } from "../services/searchService.js";
 import { sendGroupMessage } from "../services/groupService.js";
+import { hapusCommand } from "../services/openaiService.js";
 
 whatsappClient.on('ready', () => {
     console.log('WhatsApp client is ready!');
@@ -23,7 +22,7 @@ whatsappClient.on('ready', () => {
     }
     if (msg.body.startsWith('/חפוש')) {
         const query = msg.body.slice(6).trim();
-        sendGroupMessage(config.groupName, await performSearch(query));
+        sendGroupMessage(config.groupName, await hapusCommand(query));
     } else {
       await handleMessage(msg);
     }
@@ -32,6 +31,10 @@ whatsappClient.on('ready', () => {
   whatsappClient.on('message_create', async (msg: Message) => {
     if (msg.body.startsWith('/חסוס ') && msg.fromMe) {
       await handleHasusCommand(msg);
+    }
+    if (msg.body.startsWith('/חפוש') && msg.fromMe) {
+      const query = msg.body.slice(6).trim();
+      sendGroupMessage(config.groupName, await hapusCommand(query));
     } else {
       if (msg.fromMe) {
         await handleOutgoingMessage(msg);

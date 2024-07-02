@@ -4,10 +4,18 @@ import config from '../config/config.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Message, Contact, Chat } from 'whatsapp-web.js';
+import WAWebJS, { Message, Contact, Chat } from 'whatsapp-web.js';
 import { RecentGroupMessage } from '../types/RecentGroupMessage.js';
 import { fromGroupMessage } from '../types/predicates/fromGroupMessage.js';
-import { performSearch } from './searchService';
+import { hasusCommand } from './openaiService.js';
+import { sendGroupMessage } from './groupService.js';
+import db from '../clients/mongoClient.js';
+
+interface IMessage {
+  body: string;
+  sender: string;
+  timestamp: number;
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -132,3 +140,46 @@ export async function handleImageMessage(
     console.log('Image message already exists in the database');
   }
 }
+
+export async function handleHasusCommand(
+  msg: WAWebJS.Message
+): Promise<void> {
+  const contact = (await msg.getContact()) || null;
+  const senderName = contact.name || contact.pushname || contact.number || 'סהר';
+
+  try {
+    const prompt = msg.body.replace('/חסוס ', '');
+    // Fetch the last 25 messages
+    const documents = await db.find(
+      'messages',
+      { groupName: msg.from },
+      { sort: { timestamp: -1 }, limit: 25 },
+    );
+
+    // Convert documents to Message type
+    const messages: IMessage[] = documents.map((doc: any) => ({
+      body: doc.body as string,
+      sender: doc.sender as string,
+      timestamp: doc.timestamp as number,
+    }));
+
+    const last25Messages = messages.reverse().map((m) => ({
+      body: m.body,
+      sender: m.sender,
+      date: new Date(m.timestamp * 1000).toLocaleString('he-IL'),
+    }));
+
+    // Generate a response using OpenAI
+    const formattedMessages = last25Messages
+      .map((m) => `${m.date} - ${m.sender}: ${m.body}`)
+      .join('\n');
+      
+    const response = await hasusCommand(formattedMessages, prompt, senderName);
+    // Send the response to the group
+    await sendGroupMessage(config.groupName as string, response);
+    console.log(`Hasus replied: ${response}`);
+  } catch (error) {
+    console.error('Error handling /hasus command:', error);
+  }
+}
+

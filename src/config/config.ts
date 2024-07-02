@@ -9,6 +9,7 @@ interface Config {
   googleCredentials: string;
   mongoPath: string;
   puppeteer: string;
+  duckduckgiApiKey: string;
 }
 
 const config: Config = {
@@ -18,6 +19,7 @@ const config: Config = {
   googleCredentials: process.env.GOOGLE_APPLICATION_CREDENTIALS || '',
   mongoPath: process.env.MONGODB_URI || '',
   puppeteer: process.env.PUPPETEER_EXECUTABLE_PATH || '',
+  duckduckgiApiKey: process.env.DUCKDUCKGO_API_KEY || '',
 };
 
 export default config;
