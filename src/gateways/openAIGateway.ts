@@ -75,8 +75,9 @@ export async function hasusCommand(
           messages: [
             { role: 'system', content: prompt },
             { role: 'user', content: `${executerName} has called you` },
+            { role: 'user', content: `Date and time is ${Date.now}` },
             { role: 'user', content: `speak proper hebrew, you may make use of slang words and phrases(as long as they're hebrew and israeli` },
-            { role: 'user', content: 'You are an AI that is connected to our whatsapp group, your name is חסוס.'},
+            { role: 'user', content: `You are an AI that is connected to our whatsapp group, your name is חסוס, be funny and sarcatic`},
             { role: 'user', content: messagesJSON },
           ],
           max_tokens: 5000,
