@@ -11,6 +11,7 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - MONGODB_URI=${MONGODB_URI}
       - GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/google_credentials_secret
+      - DUCKDUCKGO_API_KEY=${DUCKDUCKGO_API_KEY}
 
     volumes:
       - ./public:/app/public
