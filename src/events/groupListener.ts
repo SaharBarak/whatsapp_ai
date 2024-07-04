@@ -4,7 +4,7 @@ import { handleHasusCommand, handleMessage, handleOutgoingMessage } from '../ser
 import pkg, { Message } from 'whatsapp-web.js';
 import qrcode from 'qrcode-terminal';
 import { sendGroupMessage } from "../services/groupService.js";
-import { hapusCommand } from "../services/openaiService.js";
+import { fetchTavilyInfo } from "../services/searchService.js";
 
 whatsappClient.on('ready', () => {
     console.log('WhatsApp client is ready!');
@@ -22,7 +22,12 @@ whatsappClient.on('ready', () => {
     }
     if (msg.body.startsWith('/חפוש')) {
         const query = msg.body.slice(6).trim();
-        sendGroupMessage(config.groupName, await hapusCommand(query));
+        try {
+          const tavilyInfo = await fetchTavilyInfo(query);
+          await sendGroupMessage(config.groupName, tavilyInfo);
+        } catch (error) {
+          await console.log(config.groupName, 'Failed to fetch Tavily information');
+        }
     } else {
       await handleMessage(msg);
     }
@@ -32,12 +37,20 @@ whatsappClient.on('ready', () => {
     if (msg.body.startsWith('/חסוס ') && msg.fromMe) {
       await handleHasusCommand(msg);
     }
-    if (msg.body.startsWith('/חפוש') && msg.fromMe) {
-      const query = msg.body.slice(6).trim();
-      sendGroupMessage(config.groupName, await hapusCommand(query));
-    } else {
-      if (msg.fromMe) {
-        await handleOutgoingMessage(msg);
+    else {
+      if (msg.body.startsWith('/חפוש')) {
+        const query = msg.body.slice(6).trim();
+        try {
+          const tavilyInfo = await fetchTavilyInfo(query);
+          await sendGroupMessage(config.groupName, tavilyInfo);
+        } catch (error) {
+          await console.log(config.groupName, 'Failed to fetch Tavily information');
+        }
+      }
+      else {
+        if (msg.fromMe) {
+          await handleOutgoingMessage(msg);
+        }
       }
     }
   });

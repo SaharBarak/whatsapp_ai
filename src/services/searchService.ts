@@ -1,83 +1,37 @@
-import { googleSearch, GoogleSearchResponse } from '../gateways/serpGateway.js';
-import { openai } from '../gateways/openAIGateway.js';
-import { ChatCompletionMessageParam, ChatCompletionCreateParams } from 'openai/resources/chat';
+// src/services/tavilyService.ts
+import { getTavilyData, TavilySearchParams, TavilySearchResponse } from '../gateways/tavilyGateway';
+import { openai } from '../gateways/openAIGateway';
 
-const HASUS_IDENTIFIER = "[חסוס]";
-
-interface ToolCall {
-  name: string;
-  arguments: string;
-}
-
-export async function handleUserQuery(query: string): Promise<string> {
-  const functionSchema = {
-    name: 'google_search',
-    description: 'Fetches search results from Google',
-    parameters: {
-      type: 'object',
-      properties: {
-        query: {
-          type: 'string',
-          description: 'The search query to fetch results for',
-        },
-      },
-      required: ['query'],
-    },
+export async function fetchTavilyInfo(query: string): Promise<string> {
+  const params: TavilySearchParams = {
+    query,
+    search_depth: 'basic',
+    include_answer: true,
+    include_images: false,
+    include_raw_content: false,
+    max_results: 5,
   };
 
-  const messages: ChatCompletionMessageParam[] = [
-    {
-      role: 'system',
-      content: 'You are an AI assistant. You can use the tool "google_search" to fetch search results from Google.',
-    },
-    {
-      role: 'user',
-      content: `search: ${query}`,
-    },
-  ];
+  try {
+    const data: TavilySearchResponse = await getTavilyData(params);
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4',
+      messages: [
+        { role: 'system', content: 'You are a translator from english to hebrew.' },
+        { role: 'user', content: data.answer },
+      ],
+      max_tokens: 500,
+    });
 
-  const requestPayload: ChatCompletionCreateParams = {
-    model: 'gpt-4',
-    messages: messages,
-    functions: [functionSchema],
-    function_call: 'auto',
-  };
-
-  const response = await openai.chat.completions.create(requestPayload);
-
-  const choice = response.choices[0];
-
-  if (choice.finish_reason === 'function_call') {
-    const toolCall: ToolCall = choice.message?.function_call as ToolCall;
-    if (toolCall) {
-      const toolName = toolCall.name;
-      const toolArguments = JSON.parse(toolCall.arguments);
-
-      if (toolName === 'google_search') {
-        const searchResults = await googleSearch(toolArguments.query);
-
-        const formattedResults = searchResults.results
-          .map((result: { title: string; snippet: string; link: string }) => `${result.title}: ${result.snippet}\nLink: ${result.link}`)
-          .join('\n\n');
-
-        messages.push({
-          role: 'function',
-          name: 'google_search',
-          content: formattedResults,
-        });
-
-        const finalResponse = await openai.chat.completions.create({
-          model: 'gpt-4',
-          messages: messages,
-          functions: [functionSchema],
-        });
-
-        if (finalResponse.choices[0].message?.content) {
-          return finalResponse.choices[0].message.content.trim();
-        }
-      }
+    const translatedAnswer = response.choices[0].message?.content?.trim();
+    if (!translatedAnswer) {
+      throw new Error('No translation received from OpenAI');
     }
-  }
 
-  throw new Error('No valid tool call returned from OpenAI');
+    return `[חסוס]\n ${translatedAnswer}`;
+    
+  } catch (error) {
+    console.error('Error processing Tavily data:', error);
+    throw new Error('Failed to fetch Tavily data');
+  }
 }
