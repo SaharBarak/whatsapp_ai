@@ -4,7 +4,7 @@ export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 });
 
-export async function createChatCompletion(messages: any[], model: string = 'gpt-4', maxTokens: number = 2500): Promise<string> {
+export async function createChatCompletion(messages: any[], model: string = 'gpt-4o', maxTokens: number = 2500): Promise<string> {
   try {
     const response = await openai.chat.completions.create({
       model,

@@ -150,10 +150,11 @@ export async function handleHasusCommand(
   try {
     const prompt = msg.body.replace('/חסוס ', '');
     // Fetch the last 25 messages
+    const oneWeekAgo = Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60; // Calculate timestamp for 7 days ago
     const documents = await db.find(
       'messages',
-      { groupName: msg.from },
-      { sort: { timestamp: -1 }, limit: 25 },
+      { groupName: msg.from, timestamp: { $gte: oneWeekAgo } }, // Add condition for timestamp
+      { sort: { timestamp: -1 } },
     );
 
     // Convert documents to Message type
