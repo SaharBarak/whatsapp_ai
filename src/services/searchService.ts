@@ -1,6 +1,6 @@
 // src/services/tavilyService.ts
-import { getTavilyData, TavilySearchParams, TavilySearchResponse } from '../gateways/tavilyGateway';
-import { openai } from '../gateways/openAIGateway';
+import { getTavilyData, TavilySearchParams, TavilySearchResponse } from '../gateways/tavilyGateway.js';
+import { openai } from '../gateways/openAIGateway.js';
 
 export async function fetchTavilyInfo(query: string): Promise<string> {
   const params: TavilySearchParams = {
