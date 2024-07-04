@@ -17,7 +17,7 @@ export async function fetchTavilyInfo(query: string): Promise<string> {
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
-        { role: 'system', content: 'You are a translator from english to hebrew.' },
+        { role: 'system', content: 'You are a translator from english to hebrew. all empiric mesurement units are translated to metric, all finance to New israeli shekel' },
         { role: 'user', content: data.answer },
       ],
       max_tokens: 500,
